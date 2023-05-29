@@ -25,10 +25,12 @@ const SubTitulo = styled.h2`
   font-size: 16px;
   margin-top: 15px;
   margin-bottom: 15px;
-  border: 1px solid #e2e2e2;
-  color: #222222eb;
+  box-shadow: 0px 2px 5px #e2e2e2;
+  color: #494949eb;
   padding: 10px;
   border-radius: 5px;
+  background-color: #fafafa;
+  cursor: default;
   &:hover {
     animation: animaTexto 1s both;
   }
@@ -36,7 +38,7 @@ const SubTitulo = styled.h2`
 
 const Div = styled.div`
   position: relative;
-  cursor: none;
+  cursor: zoom-in;
   background-position: center;
 `;
 
@@ -81,55 +83,90 @@ const HeaderContainer = styled.div`
   gap: 10px;
   justify-content: center;
 `;
+const SectionImagesSec = styled.div`
+  width: 100%;
+  margin-top: 50px;
+`;
+const ImagesContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`;
+const ImageSec = styled.img`
+  width: 75px;
+  border: 1px solid #e2e2e2;
+  cursor: pointer;
+`;
+
+const styleIsClicked = {
+  cursor: "none",
+};
 
 const ProdContainer = ({ produtoAtual, id }) => {
+  const [isCLicked, setIsClicked] = useState(false);
+  const [qualImagem, setQualImagem] = useState(produtoAtual.image_url);
+
   const [magnifyStyle, setMagnifyStyle] = useState({
-    backgroundImage: `url(${produtoAtual.url})`,
+    backgroundImage: `url(${produtoAtual.image_url})`,
   });
   useEffect(() => {
-    setMagnifyStyle({ backgroundImage: `url(${produtoAtual.url})` });
+    setMagnifyStyle({ backgroundImage: `url(${qualImagem})` });
   }, [id]);
   const handleMouseMove = (event) => {
-    const { offsetX, offsetY, target } = event.nativeEvent;
-    const { offsetWidth, offsetHeight } = target;
+    if (isCLicked) {
+      const { offsetX, offsetY, target } = event.nativeEvent;
+      const { offsetWidth, offsetHeight } = target;
 
-    const xPercentage = (offsetX / offsetWidth) * 100;
-    const yPercentage = (offsetY / offsetHeight) * 100;
+      const xPercentage = (offsetX / offsetWidth) * 100;
+      const yPercentage = (offsetY / offsetHeight) * 100;
 
-    setMagnifyStyle((prev) => ({
-      ...prev,
-      display: "block",
-      top: `${offsetY - 50}px`,
-      left: `${offsetX - 65}px`,
-      backgroundPosition: `${xPercentage}% ${yPercentage}% `,
-    }));
+      setMagnifyStyle((prev) => ({
+        ...prev,
+        display: "block",
+        top: `${offsetY - 50}px`,
+        left: `${offsetX - 65}px`,
+        backgroundPosition: `${xPercentage}% ${yPercentage}% `,
+      }));
+    } else {
+      return;
+    }
   };
 
   const handleMouseLeave = (event) => {
+    setIsClicked(false);
     setMagnifyStyle((prev) => ({ ...prev, display: "none" }));
   };
+  const habilitaZoom = () => {
+    setIsClicked(true);
+  };
+
   return (
     <ProdutoContainer>
       <HeaderContainer>
         <SubContainer>
-          <SubTitulo>
-            {produtoAtual.nome} - {produtoAtual.colecao}
-          </SubTitulo>
+          <SubTitulo>{produtoAtual.name}</SubTitulo>
         </SubContainer>
         <SubContainer>
-          <SubTitulo>{produtoAtual.preço.toFixed(2)} R$</SubTitulo>
+          <SubTitulo>{produtoAtual.price} R$</SubTitulo>
         </SubContainer>
       </HeaderContainer>
 
-      <Div>
+      <Div style={isCLicked ? styleIsClicked : null}>
         <ImagemPrincipal
-          src={produtoAtual.url}
+          src={produtoAtual.image_url}
           draggable="false"
+          onClick={habilitaZoom}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         />
         <Magnify style={magnifyStyle}></Magnify>
       </Div>
+      {/* <SectionImagesSec>
+        <ImagesContainer>
+          <ImageSec src="https://www.fantoy.com.br/media/catalog/product/cache/5070b15b05522f191912dd31c57262ab/t/o/tomura-min.jpg"></ImageSec>
+          <ImageSec src="https://www.fantoy.com.br/media/catalog/product/cache/5070b15b05522f191912dd31c57262ab/b/a/bakugo_anime2-min.jpg"></ImageSec>
+          <ImageSec src="https://www.fantoy.com.br/media/catalog/product/cache/5070b15b05522f191912dd31c57262ab/d/a/dabi2-min.jpg"></ImageSec>
+        </ImagesContainer>
+      </SectionImagesSec> */}
     </ProdutoContainer>
   );
 };

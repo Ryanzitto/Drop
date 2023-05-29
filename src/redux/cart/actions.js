@@ -18,9 +18,8 @@ export const removeProductFromCart = (payload) => ({
   payload,
 });
 
-export const increaseProductQuantity = (payload) => ({
+export const increaseProductQuantity = () => ({
   type: CartActiontypes.INCREASE_PRODUCT_QUANTITY,
-  payload,
 });
 
 export const decreaseProductQuantity = (payload) => ({

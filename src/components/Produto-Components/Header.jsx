@@ -11,7 +11,7 @@ const Header = styled.div`
 `;
 const TituloProduto = styled.h1`
   font-size: 26px;
-  color: #222222eb;
+  color: #494949eb;
   font-weight: 800;
   letter-spacing: 2px;
   &:hover {
@@ -38,9 +38,9 @@ const Caminho = styled.p`
 const HeaderProduto = ({ produtoAtual }) => {
   return (
     <Header>
-      <TituloProduto>{`${produtoAtual.nome} - ${produtoAtual.colecao}`}</TituloProduto>
+      <TituloProduto>{`${produtoAtual.name}`}</TituloProduto>
       <CaminhoContainer>
-        <Caminho>{`${produtoAtual.tipo} - ${produtoAtual.nome} - ID: ${produtoAtual.id} `}</Caminho>
+        <Caminho>{`${produtoAtual.description}`}</Caminho>
       </CaminhoContainer>
     </Header>
   );

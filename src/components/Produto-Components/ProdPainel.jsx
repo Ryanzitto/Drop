@@ -1,16 +1,17 @@
 import styled from "styled-components";
-import Favoritar from "../FavButton";
-
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addProductToCart, openCart } from "../../redux/cart/actions";
-
+import { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { addProductToCart, clearCart } from "../../redux/cart/actions";
+import axios from "axios";
+import { saveDataEntregaRef } from "../../redux/form/actions";
+import Popup from "./Popup";
 const PainelContainer = styled.div`
   width: 400px;
   height: fit-content;
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 40px;
   margin-left: 100px;
   justify-content: center;
   align-items: center;
@@ -18,21 +19,47 @@ const PainelContainer = styled.div`
   @media screen and (max-width: 1250px) {
     margin-left: 0px;
   }
+  position: relative;
 `;
 const HeaderPainel = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #e2e2e2;
+  box-shadow: 0px 2px 5px #e2e2e2;
   height: 75px;
-  border-radius: 3px;
+  border-radius: 5px;
+  flex-direction: column;
+  gap: 5px;
+  background-color: #fafafa;
+`;
+const Info = styled.p`
+  color: #797878;
+  font-weight: 500;
+  opacity: 0.7;
+  letter-spacing: 0.5px;
+  cursor: default;
+  &:hover {
+    opacity: 1;
+  }
 `;
 const PreçoProduto = styled.h3`
-  font-size: 28px;
+  font-size: 36px;
   color: #a840c2;
   padding: 2px;
   opacity: 0.7;
+  cursor: default;
+  &:hover {
+    opacity: 1;
+  }
+`;
+const PreçoSemDesconto = styled.h3`
+  font-size: 36px;
+  color: #7c7c7c;
+  padding: 2px;
+  opacity: 0.7;
+  text-decoration: line-through;
+  cursor: default;
   &:hover {
     opacity: 1;
   }
@@ -40,66 +67,18 @@ const PreçoProduto = styled.h3`
 
 const BodyPainel = styled.div`
   width: 100%;
-  height: 350px;
+  height: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  border: 1px solid #e2e2e2;
-  border-radius: 3px;
-  margin-top: 20px;
+  justify-content: space-evenly;
+  box-shadow: 0px 2px 5px #e2e2e2;
+  border-radius: 5px;
+  margin-top: 30px;
   gap: 20px;
+  background-color: #fafafa;
 `;
 const Section = styled.div``;
-
-const Select = styled.select`
-  width: 100px;
-  height: 30px;
-  appearance: none;
-  border: 1px solid #222222eb;
-  background-color: white;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 500;
-  color: #222222eb;
-  border-radius: 2px;
-  letter-spacing: 1px;
-  &:focus {
-    outline: none;
-  }
-`;
-const Option = styled.option`
-  background-color: white;
-`;
-const TamanhoContainer = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-const Tamanho = styled.div`
-  width: 35px;
-  height: 35px;
-  border-radius: 2px;
-  border: 1px solid #222222eb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  color: #222222eb;
-  cursor: pointer;
-  font-size: 18px;
-  &:hover {
-    background-color: #a840c2;
-    color: white;
-    border: 1px solid #a840c2;
-  }
-`;
-
-const SectionRow = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-`;
-
 const ButtonAdcionar = styled.button`
   width: 150px;
   height: 50px;
@@ -139,16 +118,10 @@ const ButtonAdcionar = styled.button`
   }
 `;
 
-const ContainerFavorite = styled.div`
-  display: flex;
-  height: 30px;
-  background-color: pink;
-  position: relative;
-`;
-
 const SectionCEP = styled.div`
   height: 100px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   margin-top: 20px;
   gap: 20px;
@@ -157,11 +130,12 @@ const SectionCEP = styled.div`
 const InputCEP = styled.input`
   width: 120px;
   height: 43px;
-  border: 1px solid #222222eb;
+  border: 2px solid #5a5a5aeb;
   font-size: 20px;
   letter-spacing: 1px;
   text-align: center;
   border-radius: 2px;
+  background-color: #fafafa;
   &:focus {
     outline: none;
   }
@@ -212,99 +186,113 @@ const Paragraph = styled.p`
   color: #222222eb;
   letter-spacing: 0.5px;
 `;
+const SectionConfirma = styled.div`
+  display: flex;
+`;
+const Display = styled.div`
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  color: #222222eb;
+`;
+const Decremento = styled.button`
+  background: none;
+  border: none;
+  width: 30px;
+  font-size: 25px;
+  cursor: pointer;
+  &:hover {
+    background-color: #eeebeb;
+  }
+`;
+const Incremento = styled.button`
+  background: none;
+  border: none;
+  width: 30px;
+  font-size: 25px;
+  margin-right: 30px;
+  cursor: pointer;
+  &:hover {
+    background-color: #eeebeb;
+  }
+`;
+const TituloCEP = styled.p`
+  color: #494949eb;
+  font-size: 16px;
+  font-weight: 600;
+`;
+const Spinner = styled.div`
+  animation: 1.5s linear infinite spinner;
+  animation-play-state: inherit;
+  border: solid 5px #cfd0d1;
+  border-bottom-color: #a840c2;
+  border-radius: 50%;
+  content: "";
+  height: 80px;
+  top: 10%;
+  left: 10%;
+  transform: translate3d(-50%, -50%, 0);
+  width: 80px;
+  will-change: transform;
+  margin-left: 80px;
+  margin-top: 50px;
+  @keyframes spinner {
+    0% {
+      transform: translate3d(-50%, -50%, 0) rotate(0deg);
+    }
+    100% {
+      transform: translate3d(-50%, -50%, 0) rotate(360deg);
+    }
+  }
+`;
 
 const ProdPainel = ({ produtoAtual }) => {
-  const [tamanhoSelecionado, settamanhoSelecionado] = useState(null);
+  const { products } = useSelector((rootReducer) => rootReducer.cartReducer);
 
-  const [mensagemErro, setMensagemErro] = useState(null);
+  const [quantidade, setQuantidade] = useState(1);
 
   const dispatch = useDispatch();
 
-  const teste = (e) => {
-    (e) => e.target.value;
-    console.log(e);
-  };
-
   const handleClick = () => {
-    if (produtoAtual.tamanhosDisp && tamanhoSelecionado != null) {
-      setMensagemErro("");
-      produtoAtual.variacao = {
-        tamanho: tamanhoSelecionado,
-        cor: null,
-      };
-      dispatch(addProductToCart(produtoAtual));
-      dispatch(openCart());
-    } else {
-      setMensagemErro("Escolha um tamanho!");
+    produtoAtual.quantity = quantidade;
+    dispatch(addProductToCart(produtoAtual));
+  };
+  const aumentaQuantidade = () => {
+    setQuantidade((quantidade) => (quantidade += 1));
+  };
+  const diminuiQuantidade = () => {
+    if (quantidade >= 2) {
+      setQuantidade((quantidade) => quantidade - 1);
     }
   };
 
-  // if (tamanhoSelecionado != null) {
-  //   setMensagemErro(null);
-  //   produtoAtual.variacao = {
-  //     tamanho: tamanhoSelecionado,
-  //   };
-  //   dispatch(addProductToCart(produtoAtual));
-  // } else {
-  //   setMensagemErro("É obrigatorio selecionar tamanho.");
-  // }
-  console.log(produtoAtual);
-
-  const handleClickActionFigure = () => {
-    produtoAtual.variacao = {
-      tamanho: null,
-      cor: null,
-    };
-    dispatch(addProductToCart(produtoAtual));
-  };
   return (
     <PainelContainer>
       <HeaderPainel>
-        <PreçoProduto>{produtoAtual.preço.toFixed(2)} R$</PreçoProduto>
+        <Info>
+          {produtoAtual.name} - {produtoAtual.description}
+        </Info>
       </HeaderPainel>
       <BodyPainel>
         <Section>
-          <TamanhoContainer>
-            {produtoAtual.tamanhosDisp?.map((item) => (
-              <Tamanho
-                key={item}
-                style={tamanhoSelecionado === item ? tamanhoClicked : null}
-                onClick={() => {
-                  settamanhoSelecionado(item);
-                }}
-              >
-                {item}
-              </Tamanho>
-            ))}
-          </TamanhoContainer>
-        </Section>
-        <SectionRow style={{ marginRight: "40px" }}>
-          {produtoAtual.tipo === "Vestuario" ? (
-            <ButtonAdcionar onClick={handleClick}>ADCIONAR</ButtonAdcionar>
-          ) : null}
-          {produtoAtual.tipo === "Action Figure" ? (
-            <ButtonAdcionar onClick={handleClickActionFigure}>
-              ADCIONAR
-            </ButtonAdcionar>
+          {produtoAtual?.discount ? (
+            <PreçoSemDesconto>{produtoAtual.price}</PreçoSemDesconto>
           ) : null}
 
-          <ContainerFavorite>
-            <Favoritar item={produtoAtual} />
-          </ContainerFavorite>
-        </SectionRow>
-        <p style={{ marginTop: "10px", color: "red" }}>{mensagemErro}</p>
-        <SectionCEP style={{ marginTop: "-20px" }}>
-          <InputCEP placeholder="00000-000"></InputCEP>
-          <ButtonCEP style={{ height: "45px" }}>CALCULAR</ButtonCEP>
-        </SectionCEP>
+          <PreçoProduto>{produtoAtual.price} R$</PreçoProduto>
+        </Section>
+        <SectionConfirma>
+          <Decremento onClick={diminuiQuantidade}>-</Decremento>
+          <Display>{quantidade}</Display>
+          <Incremento onClick={aumentaQuantidade}>+</Incremento>
+          <Link to="/Checkout">
+            <ButtonAdcionar onClick={handleClick}>COMPRAR</ButtonAdcionar>
+          </Link>
+        </SectionConfirma>
       </BodyPainel>
-      {tamanhoSelecionado != null ? (
-        <FooterPainel>
-          {tamanhoSelecionado != null && (
-            <Paragraph> Cor Selecionada: {tamanhoSelecionado}</Paragraph>
-          )}
-        </FooterPainel>
-      ) : null}
+      {products.length >= 1 ? <Popup /> : null}
     </PainelContainer>
   );
 };

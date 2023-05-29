@@ -2,7 +2,10 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Sidebar from "../components/Sidebar";
-import { removeProductFromCart } from "../redux/cart/actions";
+import {
+  increaseProductQuantity,
+  removeProductFromCart,
+} from "../redux/cart/actions";
 
 const Gambiarra = styled.div`
   width: 100vw;
@@ -24,7 +27,7 @@ const Gambiarra = styled.div`
   }
 `;
 const ContainerGeral = styled.div`
-  width: 80vw;
+  width: 100vw;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -90,7 +93,7 @@ const DadosDeEntrega = styled.div`
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   width: 60%;
   @media screen and (max-width: 900px) {
     width: 100%;
@@ -158,7 +161,7 @@ const ItemContainer = styled.div`
   width: 100%;
   height: 150px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   margin-top: 10px;
 
@@ -177,6 +180,17 @@ const Mid = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+`;
+const DescarteDiv = styled.div`
+  width: 30px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+`;
+const IconeDescarte = styled.img`
+  height: 30px;
+  cursor: pointer;
 `;
 const NomeProduto = styled.p`
   font-size: 14px;
@@ -310,7 +324,6 @@ const ConfirmaFat = styled.button`
   width: 200px;
   height: 50px;
   margin-top: 10px;
-  margin-left: 15px;
   border: none;
   background-color: #47f147;
   color: white;
@@ -419,7 +432,7 @@ const Checkout = () => {
 
   const dispatch = useDispatch();
 
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState();
 
   const [dadosDeEntrega, setDadosDeEntrega] = useState({});
 
@@ -431,11 +444,7 @@ const Checkout = () => {
 
   const [mensagem, setMensagem] = useState("");
 
-  useEffect(() => {
-    setTotal(
-      products.reduce((total, obj) => total + obj.preço * obj.quantity, 0)
-    );
-  }, [products]);
+  const [quantidade, setQuantidade] = useState(products.quantity);
 
   const {
     register,
@@ -473,11 +482,12 @@ const Checkout = () => {
     setDadosDeEntregaExiste(false);
   };
 
+  const handleCLickDescarte = () => {
+    dispatch(clearCart());
+  };
+
   return (
     <Gambiarra>
-      <SidebarContainer>
-        <Sidebar />
-      </SidebarContainer>
       <ContainerGeral>
         <Header>
           <HeaderTitulo>CHECKOUT</HeaderTitulo>
@@ -555,31 +565,29 @@ const Checkout = () => {
                     <ItemContainer key={item.id}>
                       <Left>
                         <ImagemContainer>
-                          <ImagemItem src={item.url} />
+                          <ImagemItem src={item.image_url} />
                         </ImagemContainer>
                       </Left>
                       <Mid>
-                        <NomeProduto>{item.nome}</NomeProduto>
-                        <Colecao>{item.colecao}</Colecao>
+                        <NomeProduto>{item.name}</NomeProduto>
+                        <Colecao>{item.description}</Colecao>
                         <Info>- {item.quantity} -</Info>
                         <PreçoContainer>
-                          <Preço>
-                            {(item.preço * item.quantity).toFixed(2)}R$
-                          </Preço>
+                          <Preço>{item.price * item.quantity}R$</Preço>
                         </PreçoContainer>
                       </Mid>
-                      <Descartar
-                        onClick={() => {
-                          dispatch(removeProductFromCart(item.id));
-                        }}
-                        src="./img/trash.png"
-                      />
+                      <DescarteDiv>
+                        <IconeDescarte
+                          onClick={handleCLickDescarte}
+                          src="/img/trash.png"
+                        />
+                      </DescarteDiv>
                     </ItemContainer>
                   );
                 })}
                 <SubTitulo>TOTAL:</SubTitulo>
                 {products.length > 0 ? (
-                  <Total>{total.toFixed(2)} R$</Total>
+                  <Total>{products.quantity} R$</Total>
                 ) : null}
               </Revisao>
               <Pagamento>

@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
-  background: linear-gradient(to right, #a840c2dd, #8b3d9e);
+  background: linear-gradient(to right, #c487d3, #ae61c2);
   height: 300px;
   width: 100%;
   display: flex;
   align-items: center;
   margin-top: 100px;
   align-self: flex-end;
-  box-shadow: 0px -4px 5px #cfcdcd;
+  box-shadow: 0px -1px 5px #cfcdcd;
 
   @media screen and (max-width: 500px) {
     flex-direction: column;
@@ -117,13 +117,13 @@ const HeaderList = styled.h3`
 const Footer = ({ primary }) => {
   return (
     <Container $primary={primary}>
-      <Left>
+      {/* <Left>
         <Logo src="./img/logo.jfif" />
       </Left>
-      <Line1 />
+      <Line1 /> */}
       <Right>
         <List>
-          <HeaderList>MINHA CONTA</HeaderList>
+          {/* <HeaderList>MINHA CONTA</HeaderList>
           <Link style={{ textDecoration: "none" }}>
             <ListItem href="https://github.com/Ryanzitto" target="_blank">
               PERFIL
@@ -163,7 +163,7 @@ const Footer = ({ primary }) => {
           >
             LINKEDIN
           </ListItem>
-          <ListItem>PORTIFOLIO</ListItem>
+          <ListItem>PORTIFOLIO</ListItem> */}
         </List>
       </Right>
     </Container>
