@@ -11,8 +11,8 @@ import { useEffect, useRef } from "react";
 const Container = styled.div`
   width: 100%;
   border-radius: 15px;
-  background-color: #f8f8f8;
-  box-shadow: 0px 2px 5px #e2e2e2;
+  background-color: white;
+  border: 1px solid #dddddd;
   animation: entrada 1s ease;
   @keyframes entrada {
     from {
@@ -127,6 +127,7 @@ const ButtonConfirma = styled.button`
   letter-spacing: 0.2px;
   margin-bottom: 50px;
   margin-top: 10px;
+  background-color: white;
   cursor: pointer;
   &:hover {
     animation: animationBtn 2s ease both;
@@ -158,6 +159,7 @@ const ButtonReseta = styled.button`
   letter-spacing: 1px;
   margin-bottom: 50px;
   margin-right: 30px;
+  background-color: white;
   cursor: pointer;
   &:hover {
     animation: animationBtn 2s ease both;
@@ -188,8 +190,7 @@ const MensagemReseta = styled.p`
   color: #be96c8;
   margin-top: 30px;
   margin-right: 30px;
-  background-color: #eceaeaeb;
-  box-shadow: 0px 2px 5px #e2e2e2;
+  border: 1px solid #dddddd;
   padding: 20px;
   border-radius: 10px;
 `;
@@ -335,7 +336,6 @@ const Tela1 = () => {
               <SectionImput>
                 <Label>CEP:</Label>
                 <Imput type="text" {...register("cep")} />
-
                 {errors.cep && <Span>{errors.cep.message}</Span>}
               </SectionImput>
               <SectionImput>

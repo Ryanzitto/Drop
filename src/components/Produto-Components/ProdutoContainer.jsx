@@ -25,11 +25,11 @@ const SubTitulo = styled.h2`
   font-size: 16px;
   margin-top: 15px;
   margin-bottom: 15px;
-  box-shadow: 0px 2px 5px #e2e2e2;
   color: #494949eb;
   padding: 10px;
   border-radius: 5px;
-  background-color: #fafafa;
+  border: 1px solid #dddddd;
+  background-color: white;
   cursor: default;
   &:hover {
     animation: animaTexto 1s both;
@@ -46,6 +46,7 @@ const ImagemPrincipal = styled.img`
   width: 350px;
   height: 350px;
   margin-top: 4px;
+  border-radius: 5px;
   &:hover {
     box-shadow: 0 0 3px #c2bfbfeb;
   }

@@ -4,7 +4,6 @@ import HeaderProduto from "../components/Produto-Components/Header";
 import ProdContainer from "../components/Produto-Components/ProdutoContainer";
 import ProdPainel from "../components/Produto-Components/ProdPainel";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 const ContainerPai = styled.div`
   width: 100vw;
@@ -12,7 +11,8 @@ const ContainerPai = styled.div`
   display: flex;
   overflow-x: hidden;
   overflow-y: auto;
-
+  background-image: url("/img/BG-site.jpg");
+  background-size: 1000px;
   ::-webkit-scrollbar {
     width: 5px;
     height: 8px;
@@ -32,21 +32,9 @@ const ContainerGeral = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  background: linear-gradient(white 10%, #ffffffef 60%);
   @media screen and (max-width: 1000px) {
     width: 100vw;
-  }
-`;
-const SidebarContainer = styled.div`
-  width: 20vw;
-  height: 100vh;
-  position: relative;
-
-  @media screen and (min-width: 801px) and (max-width: 1000px) {
-    width: 100vw;
-    height: 20vh;
-  }
-  @media screen and (max-width: 800px) {
-    height: 0;
   }
 `;
 
@@ -90,8 +78,8 @@ const DescSection = styled.div`
   align-items: start;
   border-radius: 5px;
   padding: 50px;
-  box-shadow: 0px 2px 5px #e2e2e2;
-  background-color: #fafafa;
+  background-color: white;
+  border: 1px solid #dddddd;
 `;
 
 const DescricaoTitulo = styled.h4`
@@ -135,8 +123,8 @@ const SobreMarcaDesc = styled.div`
   margin-top: 100px;
   border-radius: 5px;
   padding: 50px;
-  box-shadow: 0px 2px 5px #e2e2e2;
-  background-color: #fafafa;
+  background-color: white;
+  border: 1px solid #dddddd;
 `;
 
 const SobreTitulo = styled.h4`
@@ -167,8 +155,8 @@ const Produto = () => {
     const url_dev = "http://168.119.50.201:3001";
     axios.get(`${url_dev}/public/product`).then(
       (response) => {
+        console.log(response);
         setData(response.data.data);
-        console.log(data);
       },
       (error) => {
         console.log(error);

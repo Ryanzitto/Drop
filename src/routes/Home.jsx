@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Produto from "./Produto";
-import CheckOut2 from "./Checkout2";
+import TelaCadastro from "./CadastroLogin";
+
 const ContainerGeral = styled.div`
   width: 100vw;
   height: 100vh;

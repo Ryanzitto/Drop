@@ -7,8 +7,8 @@ import { resetData } from "../../redux/form/actions";
 const Container = styled.div`
   width: 100%;
   border-radius: 15px;
-  background-color: #f8f8f8;
-  box-shadow: 0px 2px 5px #e2e2e2;
+  background-color: white;
+  border: 1px solid #dddddd;
   animation: entrada 1s ease;
 
   @keyframes entrada {
@@ -125,6 +125,7 @@ const Confirmar = styled.button`
   font-weight: 600;
   letter-spacing: 0.2px;
   margin-bottom: 50px;
+  background-color: white;
   cursor: pointer;
   &:hover {
     animation: animationBtn 2s ease both;

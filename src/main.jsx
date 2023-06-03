@@ -6,19 +6,22 @@ import "./index.css";
 import { createHashRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import Home from "./routes/Home.jsx";
-import Checkout2 from "./routes/Checkout2";
+import Checkout from "./routes/Checkout";
 
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-
+import TelaCadastro from "./routes/CadastroLogin";
+import AdminTela from "./routes/Admin";
 const router = createHashRouter([
   {
     path: "/",
     element: <Outlet />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/Checkout", element: <Checkout2 /> },
+      { path: "/Checkout", element: <Checkout /> },
+      { path: "/CadastroLogin", element: <TelaCadastro /> },
+      { path: "/Admim", element: <AdminTela /> },
     ],
   },
 ]);

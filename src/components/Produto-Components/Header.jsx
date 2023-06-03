@@ -7,7 +7,8 @@ const Header = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border-bottom: 1px solid #e2e2e2;
+  border-bottom: 1px solid #dddddd;
+  background-color: #ffffff54;
 `;
 const TituloProduto = styled.h1`
   font-size: 26px;

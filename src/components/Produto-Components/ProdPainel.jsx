@@ -26,12 +26,13 @@ const HeaderPainel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 2px 5px #e2e2e2;
+  border: 1px solid #dddddd;
+  background-color: white;
   height: 75px;
   border-radius: 5px;
   flex-direction: column;
   gap: 5px;
-  background-color: #fafafa;
+  margin-top: 15px;
 `;
 const Info = styled.p`
   color: #797878;
@@ -47,22 +48,17 @@ const PreçoProduto = styled.h3`
   font-size: 36px;
   color: #a840c2;
   padding: 2px;
-  opacity: 0.7;
+  opacity: 0.9;
   cursor: default;
-  &:hover {
-    opacity: 1;
-  }
 `;
 const PreçoSemDesconto = styled.h3`
-  font-size: 36px;
-  color: #7c7c7c;
+  font-size: 24px;
+  color: #525252;
   padding: 2px;
   opacity: 0.7;
   text-decoration: line-through;
+  text-align: center;
   cursor: default;
-  &:hover {
-    opacity: 1;
-  }
 `;
 
 const BodyPainel = styled.div`
@@ -72,11 +68,11 @@ const BodyPainel = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  box-shadow: 0px 2px 5px #e2e2e2;
+  border: 1px solid #dddddd;
+  background-color: white;
   border-radius: 5px;
   margin-top: 30px;
   gap: 20px;
-  background-color: #fafafa;
 `;
 const Section = styled.div``;
 const ButtonAdcionar = styled.button`
@@ -89,7 +85,7 @@ const ButtonAdcionar = styled.button`
   letter-spacing: 0.8px;
   color: white;
   border: 1px solid #222222eb;
-  border-radius: 2px;
+  border-radius: 5px;
   animation: animationBtnBlackOut 1s both;
   @keyframes animationBtnBlackOut {
     from {
@@ -223,6 +219,7 @@ const TituloCEP = styled.p`
   font-size: 16px;
   font-weight: 600;
 `;
+
 const Spinner = styled.div`
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
@@ -246,6 +243,16 @@ const Spinner = styled.div`
       transform: translate3d(-50%, -50%, 0) rotate(360deg);
     }
   }
+`;
+
+const Cont = styled.div`
+  width: 75%;
+`;
+const ContText = styled.p`
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-align: center;
 `;
 
 const ProdPainel = ({ produtoAtual }) => {
@@ -277,10 +284,7 @@ const ProdPainel = ({ produtoAtual }) => {
       </HeaderPainel>
       <BodyPainel>
         <Section>
-          {produtoAtual?.discount ? (
-            <PreçoSemDesconto>{produtoAtual.price}</PreçoSemDesconto>
-          ) : null}
-
+          <PreçoSemDesconto> 160 R$</PreçoSemDesconto>
           <PreçoProduto>{produtoAtual.price} R$</PreçoProduto>
         </Section>
         <SectionConfirma>
@@ -291,6 +295,13 @@ const ProdPainel = ({ produtoAtual }) => {
             <ButtonAdcionar onClick={handleClick}>COMPRAR</ButtonAdcionar>
           </Link>
         </SectionConfirma>
+        <Cont>
+          <ContText>
+            "O mundo é grande e cabe nesta janela sobre o mar. O mar é grande e
+            cabe na cama e no colchão de amar. O amor é grande e cabe no breve
+            espaço de beijar"
+          </ContText>
+        </Cont>
       </BodyPainel>
       {products.length >= 1 ? <Popup /> : null}
     </PainelContainer>
