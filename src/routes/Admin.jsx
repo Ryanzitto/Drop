@@ -7,6 +7,7 @@ import Delete from "../components/Admin-components/Delete";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 const ContainerPai = styled.div`
   width: 100vw;
   height: 100vh;
@@ -32,16 +33,14 @@ const ContainerPai = styled.div`
 `;
 const ContainerGeral = styled.div`
   width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  @media screen and (max-width: 1000px) {
-    width: 100vw;
-  }
 `;
 
 const Header = styled.div`
-  height: 100px;
+  padding-top: 25px;
+  padding-bottom: 25px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -61,6 +60,7 @@ const ActionsContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  margin-top: 20px;
 `;
 const ButtonAction = styled.button`
   width: 75px;
@@ -77,6 +77,7 @@ const Body = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
+  flex-direction: column;
 `;
 const ContainerErro = styled.div`
   display: flex;
@@ -92,6 +93,9 @@ const MensagemErro = styled.p`
   text-align: center;
   color: #be96c8;
   margin-bottom: 20px;
+`;
+const FooterContainer = styled.div`
+  width: 100%;
 `;
 const ErrorBtn = styled.button`
   width: 150px;
@@ -169,6 +173,9 @@ const AdminTela = () => {
             {qualAction === "update" ? <Update /> : null}
             {qualAction === "delete" ? <Delete /> : null}
           </Body>
+          <FooterContainer>
+            <Footer />
+          </FooterContainer>
         </ContainerGeral>
       ) : (
         <ContainerErro>

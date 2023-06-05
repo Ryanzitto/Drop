@@ -5,6 +5,7 @@ import ProdContainer from "../components/Produto-Components/ProdutoContainer";
 import ProdPainel from "../components/Produto-Components/ProdPainel";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAxios } from "../hooks/useAxios";
 const ContainerPai = styled.div`
   width: 100vw;
   height: 100vh;
@@ -151,26 +152,27 @@ const Sobre = styled.p`
 const Produto = () => {
   const [data, setData] = useState(null);
 
+  const { response, loading, error, fetchData } = useAxios();
+
   useEffect(() => {
-    const url_dev = "http://168.119.50.201:3001";
-    axios.get(`${url_dev}/public/product`).then(
-      (response) => {
-        console.log(response);
-        setData(response.data.data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    const axiosParams = {
+      method: "GET",
+      url: "/public/product",
+    };
+    fetchData(axiosParams);
   }, []);
+
+  console.log(response);
 
   return (
     <ContainerPai>
       <ContainerGeral>
-        {data != null && <HeaderProduto produtoAtual={data[0]} />}
+        {loading === false && <HeaderProduto produtoAtual={response.data[0]} />}
         <Top>
-          {data != null && <ProdContainer produtoAtual={data[0]} />}
-          {data != null && <ProdPainel produtoAtual={data[0]} />}
+          {loading === false && (
+            <ProdContainer produtoAtual={response.data[0]} />
+          )}
+          {loading === false && <ProdPainel produtoAtual={response.data[0]} />}
         </Top>
         <Mid>
           <MidContainer>

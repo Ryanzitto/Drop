@@ -284,7 +284,7 @@ const ProdPainel = ({ produtoAtual }) => {
       </HeaderPainel>
       <BodyPainel>
         <Section>
-          <PreçoSemDesconto> 160 R$</PreçoSemDesconto>
+          <PreçoSemDesconto>{produtoAtual.price * 1.3} R$</PreçoSemDesconto>
           <PreçoProduto>{produtoAtual.price} R$</PreçoProduto>
         </Section>
         <SectionConfirma>

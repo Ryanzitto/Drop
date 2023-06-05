@@ -5,20 +5,22 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-
+import { useEffect } from "react";
+import { useAxios } from "../../hooks/useAxios";
+import Lista from "./Lista";
 const Container = styled.div`
   width: 100%;
-  height: 80%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
+  gap: 50px;
 `;
 
 const FormContainer = styled.form`
   width: 400px;
-  height: fit-content;
   padding-top: 20px;
   padding-bottom: 20px;
   display: flex;
@@ -96,96 +98,124 @@ const MensagemErro = styled.p`
   color: red;
   font-weight: 500;
 `;
-const createDataFormSchema = z.object({
-  nome: z.string().nonempty("Nome é obrigatório"),
-  desc: z.string().nonempty("Descrição é obrigatório"),
-  preço: z
-    .string()
-    .nonempty("O preço  é obrigatório")
-    .transform((v) => parseFloat(v)),
-  url: z.string().nonempty("URL é obrigatório"),
-  category: z
-    .string()
-    .nonempty("Preencha este campo")
-    .transform((v) => parseFloat(v)),
-});
+
+const ContainerDisplay = styled.div`
+  width: 400px;
+  height: 500px;
+  background-color: #fafafa;
+  box-shadow: 0px 2px 5px #e2e2e2;
+  border-radius: 10px;
+  border-top-right-radius: 0px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  word-wrap: break-word;
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+    background-color: #aaa;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #000;
+    border-radius: 5px;
+  }
+`;
+
+const ContainerLista = styled.div`
+  width: 80%;
+  background-color: #d36ad6;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  box-shadow: 0px 2px 5px #a1a1a1;
+  letter-spacing: 0.5px;
+`;
+const DisplayHeader = styled.div`
+  background-color: #d36ad6;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+const DisplayTitulo = styled.h1`
+  font-size: 16px;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
+const Propriedade = styled.div`
+  gap: 10px;
+  display: flex;
+`;
+const Label2 = styled.label`
+  font-weight: 600;
+`;
+const Valor = styled.p`
+  width: 80%;
+`;
+const Error = styled.p`
+  width: 65%;
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+`;
+
 const Delete = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(createDataFormSchema),
-  });
+  const [id, setId] = useState(null);
+
+  const [lista, setLista] = useState("");
 
   const { tokens } = useSelector((rootReducer) => rootReducer.userReducer);
 
-  const [tokenDeAcesso] = useState(tokens.access_token);
-  console.log(tokenDeAcesso);
+  const { response, loading, error, fetchData } = useAxios();
 
-  const criaProduto = (data) => {
+  const deletaProduto = () => {
+    setLista(null);
+    const axiosParams = {
+      method: "DELETE",
+      url: `/admin/product/deactive/${id}`,
+      headers: {
+        "Auth-Token": tokens.access_token,
+      },
+    };
+    fetchData(axiosParams);
+    setTimeout(() => {
+      atualizaLista();
+    }, 3000);
+  };
+
+  const atualizaLista = () => {
     const url_dev = "http://168.119.50.201:3001";
-    axios
-      .post(
-        `${url_dev}/admin/product`,
-        {
-          name: data.nome,
-          description: data.desc,
-          price: data.preço,
-          image_url: data.url,
-          category: data.category,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${tokenDeAcesso}`,
-          },
-        }
-      )
-      .then(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    axios.get(`${url_dev}/public/product`).then(
+      (response) => {
+        setLista(response.data.data);
+        console.log(response.data.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   return (
     <Container>
-      <>
-        <FormContainer onSubmit={handleSubmit(criaProduto)}>
-          <SectionImput>
-            <Label>NOME PRODUTO:</Label>
-            <Imput type="text" {...register("nome")} />
-            {errors.nome && <Span>{errors.nome.message}</Span>}
-          </SectionImput>
-          <SectionImput>
-            <Label>DESCRIÇÃO:</Label>
-            <Imput type="text" {...register("desc")} />
-            {errors.desc && <Span>{errors.desc.message}</Span>}
-          </SectionImput>
-          <SectionImput>
-            <Label>PREÇO:</Label>
-            <Imput type="text" {...register("preço")} />
-            {errors.preço && <Span>{errors.preço.message}</Span>}
-          </SectionImput>
-          <SectionImput>
-            <Label>URL DA IMAGEM:</Label>
-            <Imput type="text" {...register("url")} />
-            {errors.url && <Span>{errors.url.message}</Span>}
-          </SectionImput>
-          <SectionImput>
-            <Label>CATEGORY ID:</Label>
-            <Imput type="text" {...register("category")} />
-            {errors.category && <Span>{errors.category.message}</Span>}
-          </SectionImput>
-          <ContainerBtn>
-            <Confirma>CONFIRMAR</Confirma>
-          </ContainerBtn>
-        </FormContainer>
-      </>
+      <FormContainer>
+        <SectionImput onChange={(e) => setId(e.target.value)}>
+          <Label>ID do produto:</Label>
+          <Imput type="text" />
+        </SectionImput>
+        <ContainerBtn>
+          <Confirma onClick={deletaProduto}>DESATIVAR PRODUTO</Confirma>
+        </ContainerBtn>
+        {error != null && <Error>{error?.response?.data?.errors}</Error>}
+        {error == null && <Error style={{ color: "green" }}>SUCESSO</Error>}
+      </FormContainer>
+      {lista != "" && <Lista lista={lista} />}
     </Container>
   );
 };
