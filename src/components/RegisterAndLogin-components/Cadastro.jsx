@@ -5,7 +5,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { mudaForm, registraUsuario } from "../../redux/user/actions";
+import { mudaForm } from "../../redux/user/actions";
 
 const Container = styled.div`
   height: 100%;
@@ -228,7 +228,6 @@ const RegistroForm = () => {
           setStatus(response.status);
           setErrorMessage("Cadastro feito com sucesso");
           dispatch(mudaForm("Login"));
-          dispatch(registraUsuario(data));
         },
         (error) => {
           setStatus(error.response.status);

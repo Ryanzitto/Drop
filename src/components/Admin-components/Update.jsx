@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
-import { useAxios } from "../../hooks/useAxios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Lista from "./Lista";
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -92,91 +92,28 @@ const Imput = styled.input`
   }
 `;
 
-const MensagemErro = styled.p`
-  font-size: 20px;
-  color: red;
-  font-weight: 500;
-`;
-
-const ContainerDisplay = styled.div`
-  width: 400px;
-  height: 460px;
-  background-color: #fafafa;
-  box-shadow: 0px 2px 5px #e2e2e2;
-  border-radius: 10px;
-  border-top-right-radius: 0px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  word-wrap: break-word;
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 8px;
-    background-color: #aaa;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #000;
-    border-radius: 5px;
-  }
-`;
-const Resposta = styled.p``;
-const ContainerLista = styled.div`
-  width: 80%;
-  background-color: #d36ad6;
-  margin-top: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 10px;
-  border-radius: 5px;
-  color: white;
-  box-shadow: 0px 2px 5px #a1a1a1;
-  letter-spacing: 0.5px;
-`;
-const DisplayHeader = styled.div`
-  background-color: #d36ad6;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-const DisplayTitulo = styled.h1`
-  font-size: 16px;
-  color: white;
-  padding-top: 10px;
-  padding-bottom: 10px;
-`;
-const Propriedade = styled.div`
-  gap: 10px;
-  display: flex;
-`;
-const Label2 = styled.label`
-  font-weight: 600;
-`;
-const Valor = styled.p`
-  width: 80%;
-`;
-const Status = styled.button`
-  width: 75px;
-  height: 25px;
-  border: none;
-  background-color: #ff2424;
-  border-radius: 5px;
-  color: white;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  margin-top: 10px;
-`;
 const Error = styled.p`
   width: 65%;
   color: red;
   margin-top: 10px;
   text-align: center;
 `;
+const Status = styled.p`
+  margin-top: 5px;
+  font-size: 20px;
+  background-color: red;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 3px;
+  color: white;
+`;
 
 const status200 = {
   backgroundColor: "#1afa1a",
+};
+const sucesso = {
+  color: "#1afa1a",
 };
 const createDataFormSchema = z.object({
   nome: z.string().nonempty("Nome é obrigatório"),
@@ -198,31 +135,45 @@ const createDataFormSchema = z.object({
 const Update = () => {
   const [lista, setLista] = useState("");
 
-  const { tokens } = useSelector((rootReducer) => rootReducer.userReducer);
+  const [status, setStatus] = useState(null);
 
-  const { response, loading, error, fetchData } = useAxios();
+  const [erro, setErro] = useState(null);
+
+  const { tokens } = useSelector((rootReducer) => rootReducer.userReducer);
 
   const alteraProduto = (data) => {
     setLista(null);
-    console.log(data);
-    const axiosParams = {
-      method: "PUT",
-      url: `/admin/product/${data.id}`,
-      headers: {
-        "Auth-Token": tokens.access_token,
-      },
-      data: {
-        name: data.nome,
-        description: data.desc,
-        price: data.preço,
-        image_url: data.url,
-        category_id: data.category,
-      },
-    };
-    fetchData(axiosParams);
-    setTimeout(() => {
-      atualizaLista();
-    }, 3000);
+    const url_dev = "http://168.119.50.201:3001";
+    axios
+      .put(
+        `${url_dev}/admin/product/${data.id}`,
+        {
+          name: data.nome,
+          description: data.desc,
+          price: data.preço,
+          image_url: data.url,
+          category_id: data.category,
+        },
+        {
+          headers: {
+            "Auth-Token": tokens.access_token,
+          },
+        }
+      )
+      .then(
+        (response) => {
+          console.log(response);
+          atualizaLista();
+          setStatus(response.status);
+          setErro("SUCESSO!");
+        },
+        (error) => {
+          console.log(error);
+          atualizaLista();
+          setStatus(error.response.status);
+          setErro(error.response.data.errors[0]);
+        }
+      );
   };
 
   const atualizaLista = () => {
@@ -282,8 +233,12 @@ const Update = () => {
         <ContainerBtn>
           <Confirma>CRIAR PRODUTO</Confirma>
         </ContainerBtn>
-        {error != null && <Error>{error?.response?.data?.errors}</Error>}
-        {error == null && <Error style={{ color: "green" }}>SUCESSO</Error>}
+        {status != null ? (
+          <Status style={status === 200 ? status200 : null}>{status}</Status>
+        ) : null}
+        {erro != null ? (
+          <Error style={erro === "SUCESSO!" ? sucesso : null}>{erro}</Error>
+        ) : null}
       </FormContainer>
       {lista != "" && <Lista lista={lista} />}
     </Container>

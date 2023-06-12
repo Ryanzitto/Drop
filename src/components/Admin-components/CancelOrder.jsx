@@ -1,17 +1,15 @@
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import axios from "axios";
 import Lista from "./Lista";
+import { useEffect } from "react";
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  min-height: 500px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
@@ -59,12 +57,6 @@ const Confirma = styled.button`
   }
 `;
 
-const Span = styled.span`
-  font-size: 12px;
-  color: red;
-  margin-top: 5px;
-`;
-
 const SectionImput = styled.div`
   display: flex;
   flex-direction: column;
@@ -92,35 +84,6 @@ const Imput = styled.input`
   }
 `;
 
-const MensagemErro = styled.p`
-  font-size: 20px;
-  color: red;
-  font-weight: 500;
-`;
-
-const ContainerDisplay = styled.div`
-  width: 400px;
-  height: 460px;
-  background-color: #fafafa;
-  box-shadow: 0px 2px 5px #e2e2e2;
-  border-radius: 10px;
-  border-top-right-radius: 0px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  word-wrap: break-word;
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 8px;
-    background-color: #aaa;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #000;
-    border-radius: 5px;
-  }
-`;
 const Error = styled.p`
   width: 65%;
   color: red;
@@ -144,43 +107,28 @@ const status200 = {
 const sucesso = {
   color: "#1afa1a",
 };
-
-const createDataFormSchema = z.object({
-  nome: z.string().nonempty("Nome é obrigatório"),
-  desc: z.string().nonempty("Descrição é obrigatório"),
-  preço: z
-    .string()
-    .nonempty("O preço  é obrigatório")
-    .transform((v) => parseFloat(v)),
-  url: z.string().nonempty("URL é obrigatório"),
-  urlFornecedor: z.string().nonempty("URL FORNECEDOR é obrigatório"),
-  category: z
-    .string()
-    .nonempty("Preencha este campo")
-    .transform((v) => parseFloat(v)),
-});
-const Create = () => {
+const CancelOrder = () => {
   const [lista, setLista] = useState("");
 
   const [status, setStatus] = useState(null);
 
   const [erro, setErro] = useState(null);
 
+  const [id, setId] = useState();
+
   const { tokens } = useSelector((rootReducer) => rootReducer.userReducer);
 
-  const criaProduto = (data) => {
+  const cancelaPedido = () => {
     setLista(null);
+    const idFormatado = Number(id);
     const url_dev = "http://168.119.50.201:3001";
     axios
-      .post(
-        `${url_dev}/admin/product`,
+      .put(
+        `${url_dev}/admin/cancel-order/${idFormatado}`,
         {
-          name: data.nome,
-          description: data.desc,
-          price: data.preço,
-          image_url: data.url,
-          suplier_url: data.urlFornecedor,
-          category: data.category,
+          data: {
+            id: `${idFormatado}`,
+          },
         },
         {
           headers: {
@@ -199,7 +147,6 @@ const Create = () => {
           console.log(error);
           atualizaLista();
           setStatus(error.response.status);
-          setErro(error.response.data.errors[0]);
         }
       );
   };
@@ -217,49 +164,18 @@ const Create = () => {
     );
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(createDataFormSchema),
-  });
-
+  useEffect(() => {
+    atualizaLista();
+  }, []);
   return (
     <Container>
-      <FormContainer onSubmit={handleSubmit(criaProduto)}>
-        <SectionImput>
-          <Label>NOME PRODUTO:</Label>
-          <Imput type="text" {...register("nome")} />
-          {errors.nome && <Span>{errors.nome.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>DESCRIÇÃO:</Label>
-          <Imput type="text" {...register("desc")} />
-          {errors.desc && <Span>{errors.desc.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>PREÇO:</Label>
-          <Imput type="text" {...register("preço")} />
-          {errors.preço && <Span>{errors.preço.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>URL DA IMAGEM:</Label>
-          <Imput type="text" {...register("url")} />
-          {errors.url && <Span>{errors.url.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>URL DO FORNECEDOR:</Label>
-          <Imput type="text" {...register("urlFornecedor")} />
-          {errors.urlFornecedor && <Span>{errors.urlFornecedor.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>CATEGORY ID:</Label>
-          <Imput type="text" {...register("category")} />
-          {errors.category && <Span>{errors.category.message}</Span>}
+      <FormContainer>
+        <SectionImput onChange={(e) => setId(e.target.value)}>
+          <Label>ID do pedido:</Label>
+          <Imput type="text" />
         </SectionImput>
         <ContainerBtn>
-          <Confirma>CRIAR PRODUTO</Confirma>
+          <Confirma onClick={cancelaPedido}>CANCEL ORDER</Confirma>
         </ContainerBtn>
         {status != null ? (
           <Status style={status === 200 ? status200 : null}>{status}</Status>
@@ -273,4 +189,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default CancelOrder;

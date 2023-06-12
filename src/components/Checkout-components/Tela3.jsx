@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { changeStep } from "../../redux/form/actions";
-import { clearCart } from "../../redux/cart/actions";
-import { resetData } from "../../redux/form/actions";
+import axios from "axios";
+import { clearCart, salvaInfoPedido } from "../../redux/cart/actions";
+import { useEffect } from "react";
+
 const Container = styled.div`
   width: 100%;
   border-radius: 15px;
@@ -151,20 +152,49 @@ const Voltar = styled.p`
   }
 `;
 
-const Tela2 = () => {
+const Tela3 = () => {
+  const { dataEntrega } = useSelector((rootReducer) => rootReducer.formReducer);
+
   const { products } = useSelector((rootReducer) => rootReducer.cartReducer);
+
+  console.log(dataEntrega);
+  console.log(products);
 
   const dispatch = useDispatch();
 
   const voltar = () => {
-    dispatch(changeStep(1));
+    dispatch(changeStep(2));
   };
-  const handleDescarte = () => {
-    dispatch(clearCart());
-    dispatch(changeStep(1));
-  };
-  const confirmaRevisao = () => {
-    dispatch(changeStep(3));
+
+  const criaPedido = () => {
+    const data = {
+      name: dataEntrega.nome,
+      last_name: dataEntrega.sobrenome,
+      email: dataEntrega.email,
+      product_id: products[0].id,
+      quantity: products[0].quantity,
+      freight: 0,
+      personal_id: dataEntrega.cpf,
+      zip_code: dataEntrega.cep,
+      street: dataEntrega.endereço,
+      number: dataEntrega.numero,
+      complement: dataEntrega.complemento,
+      neighborhood: dataEntrega.bairro,
+      city: dataEntrega.cidade,
+      state: dataEntrega.estado,
+      reference: dataEntrega.referencia,
+    };
+    const url_dev = "http://168.119.50.201:3001";
+    axios.post(`${url_dev}/public/order`, data).then(
+      (response) => {
+        console.log(response);
+        dispatch(salvaInfoPedido(products));
+        dispatch(clearCart());
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   return (
@@ -174,31 +204,15 @@ const Tela2 = () => {
           <Voltar onClick={voltar}>VOLTAR</Voltar>
         </VoltarContainer>
         <TituloContainer>
-          <Titulo>REVISE SEU PEDIDO</Titulo>
+          <Titulo>PAGAMENTO</Titulo>
         </TituloContainer>
       </Header>
       <Body>
-        <ProdutoContainer>
-          <ImagemProduto src={products[0]?.image_url} />
-          <InfosProduto>
-            <NomeProduto>{products[0]?.name}</NomeProduto>
-            <Preço>{products[0]?.price} R$</Preço>
-            <Unidades>{products[0]?.quantity} UNIDADES</Unidades>
-          </InfosProduto>
-          <Link to="/">
-            <IconeDescarte onClick={handleDescarte} src="img/trash.png" />
-          </Link>
-        </ProdutoContainer>
-        <FooterProduto>
-          <Total>TOTAL</Total>
-          <PreçoTotal>
-            {products[0]?.price * products[0]?.quantity} R$
-          </PreçoTotal>
-          <Confirmar onClick={confirmaRevisao}>CONFIRMAR</Confirmar>
-        </FooterProduto>
+        <h1 style={{ marginBottom: "10px" }}>AQUI FICA O CHECKOUT</h1>
+        <Confirmar onClick={criaPedido}>simula pagamento!</Confirmar>
       </Body>
     </Container>
   );
 };
 
-export default Tela2;
+export default Tela3;

@@ -160,6 +160,9 @@ const ProdContainer = ({ produtoAtual, id }) => {
           onMouseLeave={handleMouseLeave}
         />
         <Magnify style={magnifyStyle}></Magnify>
+        <SubContainer>
+          <SubTitulo>500+ vendidos</SubTitulo>
+        </SubContainer>
       </Div>
       {/* <SectionImagesSec>
         <ImagesContainer>

@@ -239,7 +239,8 @@ const createDataFormSchema = z.object({
   cep: z
     .string()
     .nonempty("O cep é obrigatório")
-    .min(8, "O CEP deve conter 8 dígitos"),
+    .min(8, "O CEP deve conter 8 dígitos")
+    .transform((v) => parseFloat(v)),
   cidade: z.string().nonempty("O campo cidade é obrigatório"),
 
   bairro: z.string().nonempty("O cep é obrigatório"),
@@ -285,6 +286,7 @@ const Tela1 = () => {
   });
 
   const createDataEntrega = (data) => {
+    data.cpf = formataCPF(data.cpf);
     dispatch(saveData(data));
     dispatch(changeStep(2));
   };
@@ -324,6 +326,13 @@ const Tela1 = () => {
     "SE",
     "TO",
   ];
+
+  function formataCPF(cpf) {
+    //retira os caracteres indesejados...
+    cpf = cpf.replace(/[^\d]/g, "");
+    //realizar a formatação...
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  }
   return (
     <Container>
       {dataEntrega === null ? (

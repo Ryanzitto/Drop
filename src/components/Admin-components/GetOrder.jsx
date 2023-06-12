@@ -5,13 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
-import Lista from "./Lista";
+import ListaPedidos from "./ListaPedidos";
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
@@ -36,7 +36,7 @@ const Label = styled.label`
   color: #be96c8;
 `;
 
-const Confirma = styled.button`
+const ButtonGetOrder = styled.button`
   width: 250px;
   height: 40px;
   border: 2px solid #be96c8;
@@ -137,6 +137,19 @@ const Status = styled.p`
   border-radius: 3px;
   color: white;
 `;
+const ButtonContainer = styled.div`
+  width: 400px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #fafafa;
+  box-shadow: 0px 2px 5px #e2e2e2;
+  border-radius: 10px;
+  margin-top: 20px;
+`;
 
 const status200 = {
   backgroundColor: "#1afa1a",
@@ -145,21 +158,7 @@ const sucesso = {
   color: "#1afa1a",
 };
 
-const createDataFormSchema = z.object({
-  nome: z.string().nonempty("Nome é obrigatório"),
-  desc: z.string().nonempty("Descrição é obrigatório"),
-  preço: z
-    .string()
-    .nonempty("O preço  é obrigatório")
-    .transform((v) => parseFloat(v)),
-  url: z.string().nonempty("URL é obrigatório"),
-  urlFornecedor: z.string().nonempty("URL FORNECEDOR é obrigatório"),
-  category: z
-    .string()
-    .nonempty("Preencha este campo")
-    .transform((v) => parseFloat(v)),
-});
-const Create = () => {
+const GetOrder = () => {
   const [lista, setLista] = useState("");
 
   const [status, setStatus] = useState(null);
@@ -168,109 +167,65 @@ const Create = () => {
 
   const { tokens } = useSelector((rootReducer) => rootReducer.userReducer);
 
-  const criaProduto = (data) => {
-    setLista(null);
+  const buscaPedidos = () => {
     const url_dev = "http://168.119.50.201:3001";
     axios
-      .post(
-        `${url_dev}/admin/product`,
-        {
-          name: data.nome,
-          description: data.desc,
-          price: data.preço,
-          image_url: data.url,
-          suplier_url: data.urlFornecedor,
-          category: data.category,
+      .get(`${url_dev}/admin/order`, {
+        data: {
+          offset: 0,
+          limit: 20,
         },
-        {
-          headers: {
-            "Auth-Token": tokens.access_token,
-          },
-        }
-      )
+        headers: {
+          "Auth-Token": tokens.access_token,
+        },
+      })
       .then(
         (response) => {
           console.log(response);
-          atualizaLista();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
+
+  const atualizaListaOrder = () => {
+    const url_dev = "http://168.119.50.201:3001";
+    axios
+      .get(`${url_dev}/admin/order`, {
+        headers: {
+          "Auth-Token": tokens.access_token,
+        },
+      })
+      .then(
+        (response) => {
+          setLista(response.data.data);
           setStatus(response.status);
           setErro("SUCESSO!");
         },
         (error) => {
           console.log(error);
-          atualizaLista();
           setStatus(error.response.status);
           setErro(error.response.data.errors[0]);
         }
       );
   };
 
-  const atualizaLista = () => {
-    const url_dev = "http://168.119.50.201:3001";
-    axios.get(`${url_dev}/public/product`).then(
-      (response) => {
-        setLista(response.data.data);
-        console.log(response.data.data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(createDataFormSchema),
-  });
-
   return (
     <Container>
-      <FormContainer onSubmit={handleSubmit(criaProduto)}>
-        <SectionImput>
-          <Label>NOME PRODUTO:</Label>
-          <Imput type="text" {...register("nome")} />
-          {errors.nome && <Span>{errors.nome.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>DESCRIÇÃO:</Label>
-          <Imput type="text" {...register("desc")} />
-          {errors.desc && <Span>{errors.desc.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>PREÇO:</Label>
-          <Imput type="text" {...register("preço")} />
-          {errors.preço && <Span>{errors.preço.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>URL DA IMAGEM:</Label>
-          <Imput type="text" {...register("url")} />
-          {errors.url && <Span>{errors.url.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>URL DO FORNECEDOR:</Label>
-          <Imput type="text" {...register("urlFornecedor")} />
-          {errors.urlFornecedor && <Span>{errors.urlFornecedor.message}</Span>}
-        </SectionImput>
-        <SectionImput>
-          <Label>CATEGORY ID:</Label>
-          <Imput type="text" {...register("category")} />
-          {errors.category && <Span>{errors.category.message}</Span>}
-        </SectionImput>
-        <ContainerBtn>
-          <Confirma>CRIAR PRODUTO</Confirma>
-        </ContainerBtn>
+      <ButtonContainer>
+        <ButtonGetOrder onClick={buscaPedidos}>GET ORDER</ButtonGetOrder>
         {status != null ? (
           <Status style={status === 200 ? status200 : null}>{status}</Status>
         ) : null}
         {erro != null ? (
           <Error style={erro === "SUCESSO!" ? sucesso : null}>{erro}</Error>
         ) : null}
-      </FormContainer>
-      {lista != "" && <Lista lista={lista} />}
+      </ButtonContainer>
+
+      {lista != "" && <ListaPedidos lista={lista} />}
     </Container>
   );
 };
 
-export default Create;
+export default GetOrder;

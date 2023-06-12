@@ -35,3 +35,7 @@ export const addToHistory = (payload) => ({
   type: CartActiontypes.ADD_TO_HISTORY,
   payload,
 });
+export const salvaInfoPedido = (payload) => ({
+  type: CartActiontypes.SALVA_INFO_PEDIDO,
+  payload,
+});

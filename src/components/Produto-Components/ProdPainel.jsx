@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addProductToCart, clearCart } from "../../redux/cart/actions";
-import axios from "axios";
-import { saveDataEntregaRef } from "../../redux/form/actions";
+import { addProductToCart } from "../../redux/cart/actions";
 import Popup from "./Popup";
 const PainelContainer = styled.div`
   width: 400px;
@@ -52,13 +50,39 @@ const PreçoProduto = styled.h3`
   cursor: default;
 `;
 const PreçoSemDesconto = styled.h3`
-  font-size: 24px;
+  font-size: 20px;
   color: #525252;
   padding: 2px;
   opacity: 0.7;
   text-decoration: line-through;
   text-align: center;
   cursor: default;
+`;
+const AvaliacaoTitulo = styled.h3`
+  font-size: 12px;
+  color: #525252;
+  padding: 2px;
+  opacity: 0.7;
+  text-align: center;
+  cursor: default;
+`;
+const EstrelasContainer = styled.div`
+  width: 100%;
+  height: 35px;
+  margin-top: 15px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+const Estrela = styled.img`
+  width: 22px;
+  height: 22px;
+  opacity: 0.9;
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const BodyPainel = styled.div`
@@ -74,7 +98,17 @@ const BodyPainel = styled.div`
   margin-top: 30px;
   gap: 20px;
 `;
-const Section = styled.div``;
+const SectionSuperior = styled.div`
+  display: flex;
+  width: 80%;
+  justify-content: center;
+`;
+const Section = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: start;
+`;
 const ButtonAdcionar = styled.button`
   width: 150px;
   height: 50px;
@@ -85,7 +119,7 @@ const ButtonAdcionar = styled.button`
   letter-spacing: 0.8px;
   color: white;
   border: 1px solid #222222eb;
-  border-radius: 5px;
+  border-radius: 3px;
   animation: animationBtnBlackOut 1s both;
   @keyframes animationBtnBlackOut {
     from {
@@ -220,31 +254,6 @@ const TituloCEP = styled.p`
   font-weight: 600;
 `;
 
-const Spinner = styled.div`
-  animation: 1.5s linear infinite spinner;
-  animation-play-state: inherit;
-  border: solid 5px #cfd0d1;
-  border-bottom-color: #a840c2;
-  border-radius: 50%;
-  content: "";
-  height: 80px;
-  top: 10%;
-  left: 10%;
-  transform: translate3d(-50%, -50%, 0);
-  width: 80px;
-  will-change: transform;
-  margin-left: 80px;
-  margin-top: 50px;
-  @keyframes spinner {
-    0% {
-      transform: translate3d(-50%, -50%, 0) rotate(0deg);
-    }
-    100% {
-      transform: translate3d(-50%, -50%, 0) rotate(360deg);
-    }
-  }
-`;
-
 const Cont = styled.div`
   width: 75%;
 `;
@@ -283,10 +292,22 @@ const ProdPainel = ({ produtoAtual }) => {
         </Info>
       </HeaderPainel>
       <BodyPainel>
-        <Section>
-          <PreçoSemDesconto>{produtoAtual.price * 1.3} R$</PreçoSemDesconto>
-          <PreçoProduto>{produtoAtual.price} R$</PreçoProduto>
-        </Section>
+        <SectionSuperior>
+          <Section>
+            <PreçoSemDesconto>{produtoAtual.price * 1.3} R$</PreçoSemDesconto>
+            <PreçoProduto>{produtoAtual.price} R$</PreçoProduto>
+          </Section>
+          <Section>
+            <AvaliacaoTitulo>Avaliação deste produto: 5</AvaliacaoTitulo>
+            <EstrelasContainer>
+              <Estrela src="/img/estrela.png" />
+              <Estrela src="/img/estrela.png" />
+              <Estrela src="/img/estrela.png" />
+              <Estrela src="/img/estrela.png" />
+              <Estrela src="/img/estrela.png" />
+            </EstrelasContainer>
+          </Section>
+        </SectionSuperior>
         <SectionConfirma>
           <Decremento onClick={diminuiQuantidade}>-</Decremento>
           <Display>{quantidade}</Display>

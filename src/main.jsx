@@ -13,6 +13,7 @@ import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import TelaCadastro from "./routes/CadastroLogin";
 import AdminTela from "./routes/Admin";
+import Pedidos from "./routes/Pedidos";
 const router = createHashRouter([
   {
     path: "/",
@@ -22,6 +23,7 @@ const router = createHashRouter([
       { path: "/Checkout", element: <Checkout /> },
       { path: "/CadastroLogin", element: <TelaCadastro /> },
       { path: "/Admim", element: <AdminTela /> },
+      { path: "/Pedidos", element: <Pedidos /> },
     ],
   },
 ]);

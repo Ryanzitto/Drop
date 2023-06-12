@@ -5,7 +5,9 @@ import ProdContainer from "../components/Produto-Components/ProdutoContainer";
 import ProdPainel from "../components/Produto-Components/ProdPainel";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useAxios } from "../hooks/useAxios";
+import { Link } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 const ContainerPai = styled.div`
   width: 100vw;
   height: 100vh;
@@ -44,6 +46,7 @@ const Top = styled.div`
   height: 650px;
   display: flex;
   justify-content: space-evenly;
+  position: relative;
   @media screen and (max-width: 1250px) {
     flex-direction: column;
     height: 1200px;
@@ -53,6 +56,21 @@ const Top = styled.div`
     justify-content: center;
     gap: 100px;
   }
+`;
+const Menu = styled.div`
+  position: fixed;
+  margin-right: 1250px;
+  margin-top: 20px;
+`;
+const EntregaContainer = styled.div`
+  background-color: white;
+  width: 70px;
+  height: 30px;
+  display: flex;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #dddddd;
 `;
 
 const Mid = styled.div`
@@ -90,6 +108,7 @@ const DescricaoTitulo = styled.h4`
   color: #494949eb;
   padding-top: 5px;
   padding-bottom: 5px;
+  cursor: default;
   &:hover {
     animation: animaTexto 1s both;
   }
@@ -135,6 +154,7 @@ const SobreTitulo = styled.h4`
   color: #494949eb;
   padding-top: 5px;
   padding-bottom: 5px;
+  cursor: default;
   &:hover {
     animation: animaTexto 1s both;
   }
@@ -148,31 +168,50 @@ const Sobre = styled.p`
   font-weight: 500;
   color: #494949eb;
 `;
+const Pedidos = styled.p`
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: #494949eb;
+  cursor: pointer;
+  &:hover {
+    animation: animaTexto 1s both;
+  }
+`;
 
 const Produto = () => {
   const [data, setData] = useState(null);
 
-  const { response, loading, error, fetchData } = useAxios();
-
   useEffect(() => {
-    const axiosParams = {
-      method: "GET",
-      url: "/public/product",
-    };
-    fetchData(axiosParams);
+    const url_dev = "http://168.119.50.201:3001";
+    axios.get(`${url_dev}/public/product`).then(
+      (response) => {
+        console.log(response.data.data);
+        setData(response.data.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }, []);
 
-  console.log(response);
+  const navigate = useNavigate();
 
+  const handleClickPedidos = () => {
+    navigate("/Pedidos");
+  };
   return (
     <ContainerPai>
       <ContainerGeral>
-        {loading === false && <HeaderProduto produtoAtual={response.data[0]} />}
+        {data != null ? <HeaderProduto produtoAtual={data[0]} /> : null}
         <Top>
-          {loading === false && (
-            <ProdContainer produtoAtual={response.data[0]} />
-          )}
-          {loading === false && <ProdPainel produtoAtual={response.data[0]} />}
+          {data != null ? <ProdContainer produtoAtual={data[0]} /> : null}
+          {data != null ? <ProdPainel produtoAtual={data[0]} /> : null}
+          <Menu>
+            <EntregaContainer>
+              <Pedidos onClick={handleClickPedidos}>PEDIDOS</Pedidos>
+            </EntregaContainer>
+          </Menu>
         </Top>
         <Mid>
           <MidContainer>

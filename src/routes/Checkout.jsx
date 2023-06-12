@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import Tela1 from "../components/Checkout-components/Tela1";
 import Tela2 from "../components/Checkout-components/Tela2";
+import Tela3 from "../components/Checkout-components/Tela3";
 import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -178,6 +179,7 @@ const CheckOut = () => {
             <FormContainer>
               {qualTela === 1 ? <Tela1 /> : null}
               {qualTela === 2 ? <Tela2 /> : null}
+              {qualTela === 3 ? <Tela3 /> : null}
             </FormContainer>
           </Body>
         ) : (

@@ -7,6 +7,7 @@ const CartActiontypes = {
   DECREASE_PRODUCT_QUANTITY: "cart/decreaseProductQuantity",
   CLEAR_CART: "cart/clearCart",
   ADD_TO_HISTORY: "cart/addToHistory",
+  SALVA_INFO_PEDIDO: "cart/salvaInfoPedido",
 };
 
 export default CartActiontypes;

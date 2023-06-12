@@ -15,6 +15,7 @@ const TituloProduto = styled.h1`
   color: #494949eb;
   font-weight: 800;
   letter-spacing: 2px;
+  cursor: default;
   &:hover {
     animation: animaTexto 1s both;
     @keyframes animaTexto {

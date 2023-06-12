@@ -43,9 +43,6 @@ const Body = styled.div`
     width: 100vw;
   }
 `;
-const FooterContainer = styled.div`
-  width: 100%;
-`;
 
 const Home = () => {
   return (

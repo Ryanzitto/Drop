@@ -55,14 +55,9 @@ const Button = styled.button`
   border: 1px solid #272727;
   cursor: pointer;
   &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #222222eb;
-        color: white;
-        border: none;
-      }
-    }
+    background-color: #222222eb;
+    color: white;
+    border: none;
   }
 `;
 

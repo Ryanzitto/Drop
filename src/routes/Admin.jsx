@@ -4,15 +4,20 @@ import { useState } from "react";
 import Create from "../components/Admin-components/Create";
 import Update from "../components/Admin-components/Update";
 import Delete from "../components/Admin-components/Delete";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import { deslogaUsuario, mudaForm } from "../redux/user/actions";
+import GetOrder from "../components/Admin-components/GetOrder";
+import CancelOrder from "../components/Admin-components/CancelOrder";
 const ContainerPai = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
   overflow-x: hidden;
+  background-image: url("/img/BG-site.jpg");
+  background-size: 1000px;
   @keyframes animationMoveImg {
     to {
       transform: translateY(5px);
@@ -33,9 +38,10 @@ const ContainerPai = styled.div`
 `;
 const ContainerGeral = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 1000px;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(white 40%, #ffffffef);
 `;
 
 const Header = styled.div`
@@ -47,6 +53,7 @@ const Header = styled.div`
   align-items: center;
   flex-direction: column;
   border-bottom: 1px solid #e2e2e2;
+  background-color: white;
 `;
 const Titulo = styled.p`
   font-size: 30px;
@@ -63,7 +70,7 @@ const ActionsContainer = styled.div`
   margin-top: 20px;
 `;
 const ButtonAction = styled.button`
-  width: 75px;
+  width: 120px;
   height: 25px;
   border: none;
   background-color: #737373;
@@ -86,6 +93,7 @@ const ContainerErro = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background: linear-gradient(white 30%, #ffffffef 100%);
 `;
 const MensagemErro = styled.p`
   font-size: 20px;
@@ -128,16 +136,23 @@ const actionStyle = {
 const AdminTela = () => {
   const navigate = useNavigate();
 
-  const { user } = useSelector((rootReducer) => rootReducer.userReducer);
+  const { tokens } = useSelector((rootReducer) => rootReducer.userReducer);
 
   const [qualAction, setQualAction] = useState("create");
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(deslogaUsuario());
+      dispatch(mudaForm("Login"));
+    }, 600000);
+  }, []);
   const redirecionaUser = () => {
-    navigate("/");
+    navigate("/CadastroLogin");
   };
   return (
     <ContainerPai>
-      {user != [] ? (
+      {tokens?.access_token != null ? (
         <ContainerGeral>
           <Header>
             <Titulo>ADMIN AREA</Titulo>
@@ -167,11 +182,29 @@ const AdminTela = () => {
             >
               DELETE
             </ButtonAction>
+            <ButtonAction
+              style={qualAction === "Get order" ? actionStyle : null}
+              onClick={() => {
+                setQualAction("Get order");
+              }}
+            >
+              GET ORDER
+            </ButtonAction>
+            <ButtonAction
+              style={qualAction === "Cancel order" ? actionStyle : null}
+              onClick={() => {
+                setQualAction("Cancel order");
+              }}
+            >
+              CANCEL ORDER
+            </ButtonAction>
           </ActionsContainer>
           <Body>
             {qualAction === "create" ? <Create /> : null}
             {qualAction === "update" ? <Update /> : null}
             {qualAction === "delete" ? <Delete /> : null}
+            {qualAction === "Get order" ? <GetOrder /> : null}
+            {qualAction === "Cancel order" ? <CancelOrder /> : null}
           </Body>
           <FooterContainer>
             <Footer />

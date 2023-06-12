@@ -112,7 +112,7 @@ const Spinner = styled.div`
   }
 `;
 
-const Lista = ({ lista }) => {
+const ListaPedidos = ({ lista }) => {
   return (
     <ContainerDisplay>
       {lista != null && (
@@ -123,36 +123,36 @@ const Lista = ({ lista }) => {
           {lista?.map((item) => (
             <ContainerLista key={item.id}>
               <Propriedade>
+                <Label2>FRETE: </Label2>
+                <Valor>{item.freight}</Valor>
+              </Propriedade>
+              <Propriedade>
+                <Label2>HASH: </Label2>
+                <Valor>{item.hash}</Valor>
+              </Propriedade>
+              <Propriedade>
                 <Label2>ID: </Label2>
                 <Valor>{item.id}</Valor>
               </Propriedade>
               <Propriedade>
-                <Label2>Nome: </Label2>
-                <Valor>{item.name}</Valor>
+                <Label2 style={{ width: "150px" }}>PRODUCT ID: </Label2>
+                <Valor>{item.product_id}</Valor>
               </Propriedade>
               <Propriedade>
-                <Label2>Desc: </Label2>
-                <Valor>{item.description}</Valor>
+                <Label2>QUANTITY: </Label2>
+                <Valor>{item.quantity}</Valor>
               </Propriedade>
               <Propriedade>
-                <Label2>Preço: </Label2>
-                <Valor>{item.price}</Valor>
+                <Label2>TOTAL: </Label2>
+                <Valor>{item.total}</Valor>
               </Propriedade>
               <Propriedade>
-                <Label2>Url: </Label2>
-                <Valor>{item.image_url}</Valor>
+                <Label2 style={{ width: "100px" }}>USER ID: </Label2>
+                <Valor>{item.user_id}</Valor>
               </Propriedade>
               <Propriedade>
-                <Label2>Category: </Label2>
-                <Valor>{item.category_id}</Valor>
-              </Propriedade>
-              <Propriedade>
-                <Label2>Fornecedor: </Label2>
-                <Valor>{item.suplier_url}</Valor>
-              </Propriedade>
-              <Propriedade>
-                <Label2>Active: </Label2>
-                <Valor>{item.active === true ? "true" : "false"} </Valor>
+                <Label2 style={{ width: "150px" }}>USER email: </Label2>
+                <Valor>{item.user.email}</Valor>
               </Propriedade>
             </ContainerLista>
           ))}
@@ -167,4 +167,4 @@ const Lista = ({ lista }) => {
   );
 };
 
-export default Lista;
+export default ListaPedidos;

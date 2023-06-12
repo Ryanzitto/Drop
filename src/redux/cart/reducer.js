@@ -3,6 +3,7 @@ import CartActiontypes from "./action-type";
 const initialState = {
   products: [],
   historic: [],
+  pedidosConfirmados: [],
 };
 
 const cartReducer = (state = initialState, action) => {
@@ -36,6 +37,12 @@ const cartReducer = (state = initialState, action) => {
         products: state.products.filter(
           (product) => product.id === action.payload.id
         ),
+      };
+
+    case CartActiontypes.SALVA_INFO_PEDIDO:
+      return {
+        ...state,
+        pedidosConfirmados: action.payload,
       };
 
     case CartActiontypes.CLEAR_CART:
