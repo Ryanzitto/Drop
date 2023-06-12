@@ -258,15 +258,11 @@ const Copy = styled.p`
 const Pedidos = () => {
   const [data, setData] = useState();
 
-  const { infoPedido } = useSelector((rootReducer) => rootReducer.userReducer);
-
   const { dataEntrega } = useSelector((rootReducer) => rootReducer.formReducer);
 
   const { pedidosConfirmados } = useSelector(
     (rootReducer) => rootReducer.cartReducer
   );
-
-  const { tokens } = useSelector((rootReducer) => rootReducer.userReducer);
 
   console.log(dataEntrega);
 
