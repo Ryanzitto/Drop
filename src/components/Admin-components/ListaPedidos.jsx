@@ -148,11 +148,27 @@ const ListaPedidos = ({ lista }) => {
               </Propriedade>
               <Propriedade>
                 <Label2 style={{ width: "100px" }}>USER ID: </Label2>
-                <Valor>{item.user_id}</Valor>
+                <Valor>{item.address.user_id}</Valor>
               </Propriedade>
               <Propriedade>
                 <Label2 style={{ width: "150px" }}>USER email: </Label2>
-                <Valor>{item.user.email}</Valor>
+                <Valor>{item.address.user.email}</Valor>
+              </Propriedade>
+              <Propriedade>
+                <Label2 style={{ width: "150px" }}>USER state: </Label2>
+                <Valor>{item.address.state}</Valor>
+              </Propriedade>
+              <Propriedade>
+                <Label2 style={{ width: "150px" }}>USER city: </Label2>
+                <Valor>{item.address.city}</Valor>
+              </Propriedade>
+              <Propriedade>
+                <Label2 style={{ width: "150px" }}>USER city: </Label2>
+                <Valor>{item.address.street}</Valor>
+              </Propriedade>
+              <Propriedade>
+                <Label2 style={{ width: "150px" }}>STATUS: </Label2>
+                <Valor>{item.order_status.description}</Valor>
               </Propriedade>
             </ContainerLista>
           ))}

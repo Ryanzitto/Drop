@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import Tela1 from "../components/Checkout-components/Tela1";
 import Tela2 from "../components/Checkout-components/Tela2";
 import Tela3 from "../components/Checkout-components/Tela3";
@@ -12,8 +11,6 @@ const ContainerGeral = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  background-image: url("/img/BG-site.jpg");
-  background-size: 1000px;
   overflow-x: hidden;
   ::-webkit-scrollbar {
     width: 5px;
@@ -48,14 +45,23 @@ const Header = styled.div`
   width: 100%;
   height: 100px;
   display: flex;
+  background-image: url("/img/5593055.jpg");
+  background-size: 1000px;
+  background-position: 500px;
+`;
+const HeaderContainer = styled.div`
+  width: 100%;
+  height: 100px;
+  display: flex;
   border-bottom: 1px solid #e2e2e2;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(to right, #a840c2, 80%, #d751f8b9);
 `;
 
 const HeaderTitulo = styled.h1`
   font-size: 40px;
-  color: #be96c8;
+  color: white;
   @media screen and (max-width: 500px) {
     font-size: 40px;
   }
@@ -165,7 +171,9 @@ const CheckOut = () => {
     <ContainerGeral>
       <Container>
         <Header>
-          <HeaderTitulo>CHECKOUT</HeaderTitulo>
+          <HeaderContainer>
+            <HeaderTitulo>CHECKOUT</HeaderTitulo>
+          </HeaderContainer>
         </Header>
         {products.length >= 1 ? (
           <Body>

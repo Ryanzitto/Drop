@@ -6,7 +6,6 @@ const ProdutoContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-  margin-left: 100px;
   @media screen and (max-width: 1250px) {
     margin-left: 0px;
   }
@@ -28,8 +27,8 @@ const SubTitulo = styled.h2`
   color: #494949eb;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #dddddd;
-  background-color: white;
+  background-color: #fcfcfc;
+  border: 1px solid #e7e7e7;
   cursor: default;
   &:hover {
     animation: animaTexto 1s both;
@@ -83,19 +82,6 @@ const HeaderContainer = styled.div`
   display: flex;
   gap: 10px;
   justify-content: center;
-`;
-const SectionImagesSec = styled.div`
-  width: 100%;
-  margin-top: 50px;
-`;
-const ImagesContainer = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-`;
-const ImageSec = styled.img`
-  width: 75px;
-  border: 1px solid #e2e2e2;
-  cursor: pointer;
 `;
 
 const styleIsClicked = {

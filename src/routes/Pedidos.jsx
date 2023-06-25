@@ -31,7 +31,7 @@ const ContainerPai = styled.div`
 `;
 const ContainerGeral = styled.div`
   width: 100vw;
-  height: 1000px;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   background: linear-gradient(white 40%, #ffffffef);
@@ -60,6 +60,7 @@ const Body = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height:  fit-content;
 `;
 const FooterContainer = styled.div`
   width: 100%;
@@ -68,7 +69,9 @@ const HeaderBody = styled.div``;
 const Container = styled.div`
   display: flex;
   width: 60%;
-  height: 400px;
+  height: fit-content;
+  padding-top: 30px;
+  padding-bottom: 30px;
   align-items: center;
   justify-content: start;
   border-radius: 10px;
@@ -82,7 +85,7 @@ const Left = styled.div`
   width: 40%;
   height: 100%;
   align-items: center;
-  justify-content: space-around;
+gap: 20px;
 `;
 const Right = styled.div`
   display: flex;
@@ -95,10 +98,11 @@ const Right = styled.div`
   align-items: center;
 `;
 const ImagemProduto = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   border-radius: 10px;
   box-shadow: 0px 2px 5px #888888;
+  margin-top: 10px;
 `;
 const ButtonCancela = styled.button`
   width: 150px;
@@ -107,7 +111,6 @@ const ButtonCancela = styled.button`
   color: #be96c8;
   font-weight: 600;
   letter-spacing: 0.2px;
-  margin-bottom: 50px;
   background-color: white;
   cursor: pointer;
   &:hover {
@@ -256,6 +259,9 @@ const Copy = styled.p`
 `;
 
 const Pedidos = () => {
+  const [value, setValue] = useState();
+  const [offset, setOffset] = useState();
+  const [limit, setLimit] = useState();
   const [data, setData] = useState();
 
   const { dataEntrega } = useSelector((rootReducer) => rootReducer.formReducer);
@@ -263,6 +269,20 @@ const Pedidos = () => {
   const { pedidosConfirmados } = useSelector(
     (rootReducer) => rootReducer.cartReducer
   );
+
+    useEffect(() => {
+      const url_dev = "http://168.119.50.201:3001";
+      axios.get(`${url_dev}/public/order?value=${dataEntrega.email}&offset=0&limit=20`).then(
+        (response) => {
+          console.log(response.data.data);
+          setData(response.data.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }, [])
+
 
   console.log(dataEntrega);
 
@@ -273,73 +293,60 @@ const Pedidos = () => {
           <Titulo>PEDIDOS</Titulo>
         </Header>
         <Body>
-          <HeaderBody></HeaderBody>
-          <Container>
-            <Left>
-              <ImagemProduto src={pedidosConfirmados[0].image_url} />
-              <ButtonCancela>CANCELAR PEDIDO</ButtonCancela>
-            </Left>
-            <Right>
-              <Top>
-                <TopSection>
-                  <TopHeader>
-                    <SubTitulo>PRODUTO</SubTitulo>
-                  </TopHeader>
-                  <TopSectionBody>
-                    <NomeProduto>{pedidosConfirmados[0].name}</NomeProduto>
-                    <Quantidade>
-                      {pedidosConfirmados[0].quantity} Unidades
-                    </Quantidade>
-                    <Total>
-                      {pedidosConfirmados[0].price}
-                      R$ /UN
-                    </Total>
-                  </TopSectionBody>
-                </TopSection>
-                <TopSection>
-                  <TopHeader>
-                    <SubTitulo>DESCRIÇÃO</SubTitulo>
-                  </TopHeader>
-                  <TopSectionBody>
-                    <Copy>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Magni molestiae vel sed corrupti debitis ist.
-                    </Copy>
-                  </TopSectionBody>
-                </TopSection>
-              </Top>
-              <Bottom>
-                <HeaderBottom>
-                  <SubTitulo>DADOS DE ENTREGA</SubTitulo>
-                </HeaderBottom>
-                <BottomBody>
-                  <Section>
-                    <Label>FRETE</Label>
-                    <Valor>56,23 R$</Valor>
-                  </Section>
-                  <Section>
-                    <Label>ENDEREÇO</Label>
-                    <Valor>
-                      {dataEntrega.bairro}, {dataEntrega.endereço},
-                      {dataEntrega.numero}
-                    </Valor>
-                  </Section>
-                  <Section>
-                    <Label>PESSOA</Label>
-                    <Valor>{dataEntrega.nome}</Valor>
-                  </Section>
-                  <Section>
-                    <Label>CEP</Label>
-                    <Valor>{dataEntrega.cep}</Valor>
-                  </Section>
-                  <Section>
-                    <Label>CÓDIGO DE RASTREAMENTO</Label>
-                    <Valor>000000000</Valor>
-                  </Section>
-                </BottomBody>
-              </Bottom>
-            </Right>
-          </Container>
+          <HeaderBody>
+          </HeaderBody>
+          {data?.map((item) => {
+            return(
+              <Container>
+              <Left>
+                <ImagemProduto src={item.product.image_url} />
+                <ButtonCancela>CANCELAR PEDIDO</ButtonCancela>
+              </Left>
+              <Right>
+                <Bottom>
+                  <HeaderBottom>
+                    <SubTitulo>DADOS DE ENTREGA</SubTitulo>
+                  </HeaderBottom>
+                  <BottomBody>
+                    <Section>
+                      <Label>PROD</Label>
+                      <Valor>{item.product.name}-{item.product.description}</Valor>
+                    </Section>
+                    <Section>
+                      <Label>QUANT.</Label>
+                      <Valor>{item.quantity}</Valor>
+                    </Section>
+                    <Section>
+                      <Label>TOTAL</Label>
+                      <Valor>{item.total}</Valor>
+                    </Section>
+                    <Section>
+                      <Label>ENDEREÇO</Label>
+                      <Valor>
+                        {item.address.neighborhood}, {item.address.street},
+                        {item.address.number}
+                      </Valor>
+                    </Section>
+                    <Section>
+                      <Label>PESSOA</Label>
+                      <Valor>{item.address.user.name}</Valor>
+                    </Section>
+                    <Section>
+                      <Label>CEP</Label>
+                      <Valor>{item.address.zip_code}</Valor>
+                    </Section>
+                    <Section>
+                      <Label>CÓDIGO DE RASTREAMENTO</Label>
+                      <Valor>000000000</Valor>
+                    </Section>
+                  </BottomBody>
+                </Bottom>
+              </Right>
+            </Container>
+            )
+  
+          })}
+
         </Body>
         <FooterContainer>
           <Footer />

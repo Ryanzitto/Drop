@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import Lista from "./Lista";
 import { useEffect } from "react";
+import ListaPedidos from "./ListaPedidos";
 
 const Container = styled.div`
   width: 100%;
@@ -120,21 +121,15 @@ const CancelOrder = () => {
 
   const cancelaPedido = () => {
     setLista(null);
-    const idFormatado = Number(id);
     const url_dev = "http://168.119.50.201:3001";
     axios
       .put(
-        `${url_dev}/admin/cancel-order/${idFormatado}`,
-        {
-          data: {
-            id: `${idFormatado}`,
-          },
-        },
+        `${url_dev}/admin/cancel-order/${id}`, {},
         {
           headers: {
             "Auth-Token": tokens.access_token,
           },
-        }
+        },
       )
       .then(
         (response) => {
@@ -153,7 +148,12 @@ const CancelOrder = () => {
 
   const atualizaLista = () => {
     const url_dev = "http://168.119.50.201:3001";
-    axios.get(`${url_dev}/public/product`).then(
+    axios.get(`${url_dev}/admin/order?offset=0&limit=100`,
+    {
+      headers: {
+        "Auth-Token": tokens.access_token,
+      },
+    }).then(
       (response) => {
         setLista(response.data.data);
         console.log(response.data.data);
@@ -184,7 +184,7 @@ const CancelOrder = () => {
           <Error style={erro === "SUCESSO!" ? sucesso : null}>{erro}</Error>
         ) : null}
       </FormContainer>
-      {lista != "" && <Lista lista={lista} />}
+      {lista != "" && <ListaPedidos lista={lista} />}
     </Container>
   );
 };

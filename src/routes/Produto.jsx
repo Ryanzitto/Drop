@@ -14,8 +14,6 @@ const ContainerPai = styled.div`
   display: flex;
   overflow-x: hidden;
   overflow-y: auto;
-  background-image: url("/img/BG-site.jpg");
-  background-size: 1000px;
   ::-webkit-scrollbar {
     width: 5px;
     height: 8px;
@@ -58,19 +56,34 @@ const Top = styled.div`
   }
 `;
 const Menu = styled.div`
-  position: fixed;
+  position: absolute;
   margin-right: 1250px;
   margin-top: 20px;
+  width: 250px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  @media screen and (min-width: 1251px) and (max-width: 1350px) {
+    justify-content: end;
+  }
+  @media screen and (max-width: 1250px) {
+    margin: 0;
+    margin-top: 100px;
+  }
 `;
 const EntregaContainer = styled.div`
   background-color: white;
-  width: 70px;
+  width: 100px;
   height: 30px;
   display: flex;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
   border: 1px solid #dddddd;
+  margin-left: 60px;
+  @media screen and (max-width: 1250px) {
+    margin: 0;
+  }
 `;
 
 const Mid = styled.div`
@@ -97,8 +110,9 @@ const DescSection = styled.div`
   align-items: start;
   border-radius: 5px;
   padding: 50px;
-  background-color: white;
-  border: 1px solid #dddddd;
+  background-color: #fcfcfc;
+  box-shadow: 3px 3px 5px #c2c2c2;
+  border: 1px solid #e7e7e7;
 `;
 
 const DescricaoTitulo = styled.h4`
@@ -143,8 +157,9 @@ const SobreMarcaDesc = styled.div`
   margin-top: 100px;
   border-radius: 5px;
   padding: 50px;
-  background-color: white;
-  border: 1px solid #dddddd;
+  background-color: #fcfcfc;
+  box-shadow: 3px 3px 5px #c2c2c2;
+  border: 1px solid #e7e7e7;
 `;
 
 const SobreTitulo = styled.h4`
@@ -171,8 +186,9 @@ const Sobre = styled.p`
 const Pedidos = styled.p`
   font-size: 12px;
   letter-spacing: 1px;
-  font-weight: 600;
-  color: #494949eb;
+  font-weight: 800;
+  color: #222222eb;
+
   cursor: pointer;
   &:hover {
     animation: animaTexto 1s both;

@@ -12,8 +12,13 @@ const PopUp = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 15px;
-  border: 1px solid #dddddd;
+  margin-top: -150px;
+  animation: animapopup 2s infinite ease alternate;
+  @keyframes animapopup {
+    to {
+      transform: translateY(10px);
+    }
+  }
 `;
 const PopUpTextContainer = styled.div`
   width: 100%;
@@ -54,6 +59,7 @@ const Button = styled.button`
   border-radius: 5px;
   border: 1px solid #272727;
   cursor: pointer;
+  transition: 1s;
   &:hover {
     background-color: #222222eb;
     color: white;

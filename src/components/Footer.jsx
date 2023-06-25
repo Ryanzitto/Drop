@@ -2,15 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+const ContainerGeral = styled.div`
+  background-image: url("/img/5593055.jpg");
+  background-size: 1000px;
+  background-position: 500px;
+  height: 300px;
+  width: 100%;
+  margin-top: 100px;
+`;
 const Container = styled.div`
-  background: white;
   height: 300px;
   width: 100%;
   display: flex;
   align-items: center;
-  margin-top: 100px;
   align-self: flex-end;
   border-top: 1px solid #eeeeee;
+  background: linear-gradient(to right, #a840c2, 80%, #d751f8b9);
 
   @media screen and (max-width: 500px) {
     flex-direction: column;
@@ -26,20 +33,23 @@ const DropContainer = styled.div`
   display: flex;
   justify-content: start;
   margin-left: 50px;
-  color: #222222eb;
 `;
 const DROP = styled.h1`
   font-size: 100px;
   letter-spacing: 20px;
+  color: #ffffffeb;
+  cursor: default;
 `;
 
 const Footer = ({ primary }) => {
   return (
-    <Container $primary={primary}>
-      <DropContainer>
-        <DROP>DROP</DROP>
-      </DropContainer>
-    </Container>
+    <ContainerGeral>
+      <Container $primary={primary}>
+        <DropContainer>
+          <DROP>DROP</DROP>
+        </DropContainer>
+      </Container>
+    </ContainerGeral>
   );
 };
 

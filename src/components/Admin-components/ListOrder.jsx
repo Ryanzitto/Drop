@@ -163,6 +163,10 @@ const GetOrder = () => {
 
   const [status, setStatus] = useState(null);
 
+  const [offset, setOffset] = useState(null);
+
+  const [limit, setLimit] = useState(null);
+
   const [erro, setErro] = useState(null);
 
   const { tokens } = useSelector((rootReducer) => rootReducer.userReducer);
@@ -170,10 +174,10 @@ const GetOrder = () => {
   const buscaPedidos = () => {
     const url_dev = "http://168.119.50.201:3001";
     axios
-      .get(`${url_dev}/admin/order`, {
+      .get(`${url_dev}/admin/order?offset=${offset}&limit=${limit}`, {
         data: {
-          offset: 0,
-          limit: 20,
+          offset: offset,
+          limit: limit,
         },
         headers: {
           "Auth-Token": tokens.access_token,
@@ -182,26 +186,9 @@ const GetOrder = () => {
       .then(
         (response) => {
           console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  };
-
-  const atualizaListaOrder = () => {
-    const url_dev = "http://168.119.50.201:3001";
-    axios
-      .get(`${url_dev}/admin/order`, {
-        headers: {
-          "Auth-Token": tokens.access_token,
-        },
-      })
-      .then(
-        (response) => {
-          setLista(response.data.data);
-          setStatus(response.status);
-          setErro("SUCESSO!");
+          setLista(response.data.data)
+          setStatus(response.status)
+          setErro("SUCESSO!")
         },
         (error) => {
           console.log(error);
@@ -213,6 +200,14 @@ const GetOrder = () => {
 
   return (
     <Container>
+      <div onChange={(e) => setOffset(e.target.value)}>
+        <label>offset</label>
+        <input></input>
+      </div>
+      <div onChange={(e) => setLimit(e.target.value)}>
+        <label>limit</label>
+        <input></input>
+      </div>
       <ButtonContainer>
         <ButtonGetOrder onClick={buscaPedidos}>GET ORDER</ButtonGetOrder>
         {status != null ? (

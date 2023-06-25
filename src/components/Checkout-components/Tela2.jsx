@@ -27,9 +27,12 @@ const Header = styled.div`
   align-items: center;
   margin-bottom: 30px;
   padding-top: 30px;
+  @media screen and (max-width: 850px) {
+    flex-direction: column;
+  }
 `;
 const VoltarContainer = styled.div`
-  width: 100px;
+  width: 150px;
   display: flex;
   justify-content: center;
 `;
@@ -43,7 +46,11 @@ const Titulo = styled.div`
   letter-spacing: 0.5px;
   font-size: 20px;
   color: #575555eb;
-  margin-right: 100px;
+  margin-right: 150px;
+  @media screen and (max-width: 850px) {
+    margin: 0;
+    margin-top: 20px;
+  }
 `;
 const Body = styled.div`
   width: 100%;
@@ -61,6 +68,13 @@ const ProdutoContainer = styled.div`
   border-top: 1px solid #e2e2e2;
   border-bottom: 1px solid #e2e2e2;
   justify-content: space-around;
+  @media screen and (max-width: 850px) {
+    flex-direction: column;
+    height: fit-content;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    gap: 20px;
+  }
 `;
 const ImagemProduto = styled.img`
   width: 100px;
@@ -74,6 +88,14 @@ const InfosProduto = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
+  @media screen and (max-width: 850px) {
+    width: fit-content;
+    height: fit-content;
+    border: 1px solid #be96c8;
+    border-radius: 5px;
+    padding: 8px;
+    gap: 10px;
+  }
 `;
 const NomeProduto = styled.p`
   font-weight: 500;
@@ -94,6 +116,9 @@ const IconeDescarte = styled.img`
   cursor: pointer;
   &:hover {
     opacity: 1;
+  }
+  @media screen and (max-width: 850px) {
+    padding: 0;
   }
 `;
 
@@ -118,36 +143,43 @@ const PreçoTotal = styled.p`
 `;
 
 const Confirmar = styled.button`
-  width: 150px;
+  width: 200px;
   height: 40px;
-  border: 2px solid #be96c8;
-  color: #be96c8;
+  border: 2px solid #a840c2;
+  color: #a840c2;
   font-weight: 600;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.8px;
   margin-bottom: 50px;
+  margin-top: 10px;
   background-color: white;
   cursor: pointer;
+  border-radius: 3px;
+  transition: 1s;
   &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
+    background-color: #a840c2;
+    color: white;
+  }
+  @media screen and (max-width: 600px) {
+    width: 120px;
   }
 `;
-const Voltar = styled.p`
-  margin-left: 50px;
-  opacity: 0.3;
-  font-weight: 600;
-  border-bottom: 1px solid #575555eb;
+const Voltar = styled.button`
+  width: 100px;
+  height: 30px;
+  border: none;
+  background-color: #a840c2;
+  color: white;
+  border-radius: 3px;
   cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transition: 1s;
+  margin-left: 50px;
   &:hover {
     opacity: 0.7;
+  }
+  @media screen and (max-width: 850px) {
+    margin: 0;
   }
 `;
 

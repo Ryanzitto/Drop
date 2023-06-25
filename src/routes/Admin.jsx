@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { deslogaUsuario, mudaForm } from "../redux/user/actions";
-import GetOrder from "../components/Admin-components/GetOrder";
+import GetOrder from "../components/Admin-components/ListOrder";
 import CancelOrder from "../components/Admin-components/CancelOrder";
 const ContainerPai = styled.div`
   width: 100vw;
@@ -183,12 +183,12 @@ const AdminTela = () => {
               DELETE
             </ButtonAction>
             <ButtonAction
-              style={qualAction === "Get order" ? actionStyle : null}
+              style={qualAction === "List Order" ? actionStyle : null}
               onClick={() => {
-                setQualAction("Get order");
+                setQualAction("List Order");
               }}
             >
-              GET ORDER
+              LIST ORDER
             </ButtonAction>
             <ButtonAction
               style={qualAction === "Cancel order" ? actionStyle : null}
@@ -203,7 +203,7 @@ const AdminTela = () => {
             {qualAction === "create" ? <Create /> : null}
             {qualAction === "update" ? <Update /> : null}
             {qualAction === "delete" ? <Delete /> : null}
-            {qualAction === "Get order" ? <GetOrder /> : null}
+            {qualAction === "List Order" ? <GetOrder /> : null}
             {qualAction === "Cancel order" ? <CancelOrder /> : null}
           </Body>
           <FooterContainer>

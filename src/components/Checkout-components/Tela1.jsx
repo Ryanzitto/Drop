@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { useState } from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStep, resetData, saveData } from "../../redux/form/actions";
-import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -14,6 +13,7 @@ const Container = styled.div`
   background-color: white;
   border: 1px solid #dddddd;
   animation: entrada 1s ease;
+  padding-bottom: 30px;
   @keyframes entrada {
     from {
       opacity: 0;
@@ -21,6 +21,9 @@ const Container = styled.div`
     to {
       opacity: 1;
     }
+  }
+  @media screen and (max-width: 500px) {
+    border: none;
   }
 `;
 const Header = styled.div`
@@ -30,6 +33,18 @@ const Header = styled.div`
   align-items: center;
   margin-bottom: 30px;
   padding-top: 30px;
+`;
+const HeaderReset = styled.div`
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-top: 30px;
+  justify-content: space-between;
+  @media screen and (max-width: 700px) {
+    gap: 30px;
+  }
 `;
 const Titulo = styled.div`
   font-weight: 800;
@@ -41,6 +56,15 @@ const Body = styled.form`
   width: 100%;
   height: 85%;
   display: flex;
+  @media screen and (max-width: 1100px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  @media screen and (min-width: 1400px) {
+    width: 80%;
+    margin: 0 auto;
+  }
 `;
 const Coluna1 = styled.div`
   width: 33%;
@@ -109,37 +133,22 @@ const Option = styled.option`
   font-size: 16px;
 `;
 
-const Top = styled.div``;
-const Bottom = styled.div``;
-const Line = styled.div`
-  width: 200px;
-  height: 1px;
-  background-color: #e2e2e2;
-  margin-top: 30px;
-  margin-bottom: 30px;
-`;
 const ButtonConfirma = styled.button`
   width: 200px;
   height: 40px;
-  border: 2px solid #be96c8;
-  color: #be96c8;
+  border: 2px solid #a840c2;
+  color: #a840c2;
   font-weight: 600;
   letter-spacing: 0.2px;
   margin-bottom: 50px;
   margin-top: 10px;
   background-color: white;
   cursor: pointer;
+  border-radius: 3px;
+  transition: 1s;
   &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
+    background-color: #a840c2;
+    color: white;
   }
 `;
 const Span = styled.span`
@@ -152,8 +161,8 @@ const Span = styled.span`
 const ButtonReseta = styled.button`
   width: 200px;
   height: 40px;
-  border: 2px solid #be96c8;
-  color: #be96c8;
+  border: none;
+  color: #919191;
   font-weight: 600;
   font-size: 16px;
   letter-spacing: 1px;
@@ -161,17 +170,9 @@ const ButtonReseta = styled.button`
   margin-right: 30px;
   background-color: white;
   cursor: pointer;
-  &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
+  @media screen and (max-width: 1000px) {
+    margin: 0;
+    margin-top: 20px;
   }
 `;
 
@@ -179,7 +180,6 @@ const ResetaContainer = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  height: 450px;
   flex-direction: column;
 `;
 const MensagemReseta = styled.p`
@@ -193,17 +193,41 @@ const MensagemReseta = styled.p`
   border: 1px solid #dddddd;
   padding: 20px;
   border-radius: 10px;
+  @media screen and (max-width: 1000px) {
+    margin: 0;
+  }
 `;
-const Proximo = styled.p`
-  margin-right: 50px;
-  opacity: 0.3;
-  font-weight: 600;
-  border-bottom: 1px solid #575555eb;
+const Voltar = styled.button`
+  width: 100px;
+  height: 30px;
+  border: none;
+  background-color: #a840c2;
+  color: white;
+  border-radius: 3px;
   cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transition: 1s;
   &:hover {
     opacity: 0.7;
   }
 `;
+const Proximo = styled.button`
+  width: 100px;
+  height: 30px;
+  border: none;
+  background-color: #a840c2;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transition: 1s;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
 const IMG = styled.img`
   margin-left: 100px;
   width: 300px;
@@ -217,16 +241,27 @@ const IMG = styled.img`
   &:hover {
     opacity: 0.8;
   }
+  @media screen and (max-width: 1250px) {
+    margin: 0;
+  }
 `;
 const Conteudo = styled.div`
   width: 100%;
+  height: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
+  @media screen and (max-width: 1250px) {
+    flex-direction: column;
+  }
 `;
 const Div1 = styled.div`
   width: 50%;
   display: flex;
+  justify-content: center;
+  @media screen and (max-width: 1250px) {
+    width: 100%;
+  }
 `;
 const Div2 = styled.div`
   width: 50%;
@@ -234,6 +269,9 @@ const Div2 = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media screen and (max-width: 1250px) {
+    width: 100%;
+  }
 `;
 const createDataFormSchema = z.object({
   cep: z
@@ -276,6 +314,7 @@ const Tela1 = () => {
 
   const { dataEntrega } = useSelector((rootReducer) => rootReducer.formReducer);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     register,
@@ -333,6 +372,9 @@ const Tela1 = () => {
     //realizar a formatação...
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
   }
+  const voltaHome = () => {
+    navigate("/");
+  };
   return (
     <Container>
       {dataEntrega === null ? (
@@ -430,9 +472,10 @@ const Tela1 = () => {
 
       {dataEntrega != null ? (
         <ResetaContainer>
-          <Header style={{ justifyContent: "flex-end" }}>
+          <HeaderReset>
+            <Voltar onClick={voltaHome}>ANTERIOR</Voltar>
             <Proximo onClick={proximo}>PRÓXIMO</Proximo>
-          </Header>
+          </HeaderReset>
           <Conteudo>
             <Div1>
               <IMG src="/img/login-img.png" />

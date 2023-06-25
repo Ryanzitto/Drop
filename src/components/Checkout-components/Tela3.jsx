@@ -119,34 +119,34 @@ const PreçoTotal = styled.p`
 `;
 
 const Confirmar = styled.button`
-  width: 150px;
+  width: 200px;
   height: 40px;
-  border: 2px solid #be96c8;
-  color: #be96c8;
+  border: 2px solid #a840c2;
+  color: #a840c2;
   font-weight: 600;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.8px;
   margin-bottom: 50px;
+  margin-top: 10px;
   background-color: white;
   cursor: pointer;
+  border-radius: 3px;
+  transition: 1s;
   &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
+    background-color: #a840c2;
+    color: white;
   }
 `;
-const Voltar = styled.p`
-  margin-left: 50px;
-  opacity: 0.3;
-  font-weight: 600;
-  border-bottom: 1px solid #575555eb;
+const Voltar = styled.button`
+  width: 100px;
+  height: 30px;
+  border: none;
+  background-color: #a840c2;
+  color: white;
+  border-radius: 3px;
   cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transition: 1s;
   &:hover {
     opacity: 0.7;
   }
@@ -173,7 +173,7 @@ const Tela3 = () => {
       email: dataEntrega.email,
       product_id: products[0].id,
       quantity: products[0].quantity,
-      freight: 0,
+      freight: 100,
       personal_id: dataEntrega.cpf,
       zip_code: dataEntrega.cep,
       street: dataEntrega.endereço,
