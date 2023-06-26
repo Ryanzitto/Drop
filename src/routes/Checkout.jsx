@@ -6,7 +6,8 @@ import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { changeStep } from "../redux/form/actions";
+import ButtonDefault from "../components/ButtonDefault";
+
 const ContainerGeral = styled.div`
   width: 100vw;
   height: 100vh;
@@ -124,30 +125,6 @@ const TituloError = styled.p`
   color: #797878;
   cursor: default;
 `;
-const ButtonError = styled.button`
-  width: 150px;
-  height: 40px;
-  border: 2px solid #be96c8;
-  color: #be96c8;
-  font-weight: 600;
-  font-size: 16px;
-  letter-spacing: 1px;
-  margin-top: 50px;
-  background-color: white;
-  cursor: pointer;
-  &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
-  }
-`;
 
 const styleStep = {
   backgroundColor: "#B768CB",
@@ -194,7 +171,7 @@ const CheckOut = () => {
           <BodyError>
             <TituloError>OOOOPS, ALGO ESTÁ ERRADO!</TituloError>
             <Link to="/">
-              <ButtonError>VOLTAR</ButtonError>
+              <ButtonDefault nomeBtn={"VOLTAR"} />
             </Link>
           </BodyError>
         )}

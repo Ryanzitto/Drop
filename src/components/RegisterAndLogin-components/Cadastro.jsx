@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { mudaForm } from "../../redux/user/actions";
-
+import ButtonDefault from "../ButtonDefault";
 const Container = styled.div`
   height: 100%;
   display: flex;
@@ -39,7 +39,7 @@ const FormContainer = styled.form`
 const Label = styled.label`
   font-weight: 500;
   font-size: 14px;
-  color: #be96c8;
+  color: #494949eb;
 `;
 
 const Confirma = styled.button`
@@ -114,9 +114,11 @@ const LadoDireito = styled.div`
   margin-bottom: 27px;
 `;
 const ContainerBtn = styled.div`
+  width: 90%;
   height: 50px;
   display: flex;
   align-items: flex-end;
+  justify-content: center;
 `;
 
 const Imput = styled.input`
@@ -177,8 +179,10 @@ const createDataFormSchema = z
       .string()
       .min(8, { message: "Senha muito curta" })
       .nonempty("Confirme a senha!"),
-    idade: z.string().transform((v) => parseFloat(v)),
-
+    idade: z
+      .string()
+      .nonempty("Idade é origatório")
+      .transform((v) => parseFloat(v)),
     cpf: z
       .string()
       .nonempty("O cpf é obrigatório")
@@ -280,7 +284,7 @@ const RegistroForm = () => {
               {errors.senha2 && <Span>{errors.senha2.message}</Span>}
             </SectionImput>
             <ContainerBtn>
-              <Confirma>CONFIRMAR</Confirma>
+              <ButtonDefault nomeBtn={"CONFIRMAR"} />
             </ContainerBtn>
           </LadoDireito>
         </FormContainer>

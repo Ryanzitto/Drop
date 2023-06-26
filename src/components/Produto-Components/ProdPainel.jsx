@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addProductToCart } from "../../redux/cart/actions";
 import Popup from "./Popup";
-
 const PainelContainer = styled.div`
   width: 400px;
   height: fit-content;
@@ -38,7 +37,7 @@ const HeaderDiv = styled.div`
   background: #b93fffc5;
   border-radius: 8px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(10.3px);
   border: 1px solid rgba(114, 114, 114, 0.18);
   justify-content: center;
@@ -73,7 +72,7 @@ const PreçoProduto = styled.h3`
 `;
 const PreçoSemDesconto = styled.h3`
   font-size: 20px;
-  color: #3636366f;
+  color: #363636;
   padding: 2px;
   opacity: 0.7;
   text-decoration: line-through;
@@ -108,10 +107,7 @@ const EstrelasContainer = styled.div`
 const Estrela = styled.img`
   width: 18px;
   height: 18px;
-  opacity: 0.8;
-  &:hover {
-    opacity: 1;
-  }
+  opacity: 0.6;
   @media screen and (max-width: 450px) {
     width: 20px;
     height: 20px;
@@ -142,7 +138,7 @@ const Div = styled.div`
   background: #b93fffc5;
   border-radius: 8px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(10.3px);
   border: 1px solid rgba(114, 114, 114, 0.18);
   gap: 20px;

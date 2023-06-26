@@ -3,14 +3,13 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { changeStep } from "../../redux/form/actions";
 import { clearCart } from "../../redux/cart/actions";
-import { resetData } from "../../redux/form/actions";
+import ButtonDefault from "../ButtonDefault";
 const Container = styled.div`
   width: 100%;
   border-radius: 15px;
   background-color: white;
   border: 1px solid #dddddd;
   animation: entrada 1s ease;
-
   @keyframes entrada {
     from {
       opacity: 0;
@@ -99,15 +98,18 @@ const InfosProduto = styled.div`
 `;
 const NomeProduto = styled.p`
   font-weight: 500;
-  color: #be96c8;
+  color: #575555eb;
+  font-weight: 800;
 `;
 const Preço = styled.p`
   font-weight: 500;
-  color: #be96c8;
+  color: #575555eb;
+  font-weight: 800;
 `;
 const Unidades = styled.p`
   font-weight: 500;
-  color: #be96c8;
+  color: #575555eb;
+  font-weight: 800;
 `;
 const IconeDescarte = styled.img`
   width: 25px;
@@ -132,36 +134,14 @@ const FooterProduto = styled.div`
   padding-top: 20px;
 `;
 const Total = styled.p`
-  color: #be96c8;
+  color: #575555eb;
   font-size: 12px;
   font-weight: 600;
 `;
 const PreçoTotal = styled.p`
-  color: #be96c8;
+  color: #575555eb;
   font-size: 14px;
   font-weight: 600;
-`;
-
-const Confirmar = styled.button`
-  width: 200px;
-  height: 40px;
-  border: 2px solid #a840c2;
-  color: #a840c2;
-  font-weight: 600;
-  letter-spacing: 0.8px;
-  margin-bottom: 50px;
-  margin-top: 10px;
-  background-color: white;
-  cursor: pointer;
-  border-radius: 3px;
-  transition: 1s;
-  &:hover {
-    background-color: #a840c2;
-    color: white;
-  }
-  @media screen and (max-width: 600px) {
-    width: 120px;
-  }
 `;
 const Voltar = styled.button`
   width: 100px;
@@ -226,7 +206,7 @@ const Tela2 = () => {
           <PreçoTotal>
             {products[0]?.price * products[0]?.quantity} R$
           </PreçoTotal>
-          <Confirmar onClick={confirmaRevisao}>CONFIRMAR</Confirmar>
+          <ButtonDefault func={confirmaRevisao} nomeBtn={"CONFIRMAR"} />
         </FooterProduto>
       </Body>
     </Container>

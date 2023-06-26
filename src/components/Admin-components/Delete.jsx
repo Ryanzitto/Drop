@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import Lista from "./Lista";
+import ButtonDefault from "../ButtonDefault";
 
 const Container = styled.div`
   width: 100%;
@@ -30,30 +31,7 @@ const FormContainer = styled.form`
 const Label = styled.label`
   font-weight: 500;
   font-size: 14px;
-  color: #be96c8;
-`;
-
-const Confirma = styled.button`
-  width: 250px;
-  height: 40px;
-  border: 2px solid #be96c8;
-  color: #be96c8;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  background-color: #fafafa;
-  cursor: pointer;
-  &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
-  }
+  color: #494949eb;
 `;
 
 const SectionImput = styled.div`
@@ -163,7 +141,7 @@ const Delete = () => {
           <Imput type="text" />
         </SectionImput>
         <ContainerBtn>
-          <Confirma onClick={deletaProduto}>DESATIVAR PRODUTO</Confirma>
+          <ButtonDefault func={deletaProduto} nomeBtn={"DESATIVAR PRODUTO"} />
         </ContainerBtn>
         {status != null ? (
           <Status style={status === 200 ? status200 : null}>{status}</Status>

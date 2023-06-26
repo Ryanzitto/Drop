@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Produto from "./Produto";
-import TelaCadastro from "./CadastroLogin";
 
 const ContainerGeral = styled.div`
   width: 100vw;

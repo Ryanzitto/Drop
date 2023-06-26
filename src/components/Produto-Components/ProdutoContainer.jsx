@@ -27,11 +27,12 @@ const SubTitulo = styled.h2`
   color: #494949eb;
   padding: 10px;
   border-radius: 5px;
-  background-color: #fcfcfc;
   border: 1px solid #e7e7e7;
   cursor: default;
+  transition: 1s;
+  font-weight: 800;
   &:hover {
-    animation: animaTexto 1s both;
+    color: #b93fffc5;
   }
 `;
 
@@ -136,7 +137,6 @@ const ProdContainer = ({ produtoAtual, id }) => {
           <SubTitulo>{produtoAtual.price} R$</SubTitulo>
         </SubContainer>
       </HeaderContainer>
-
       <Div style={isCLicked ? styleIsClicked : null}>
         <ImagemPrincipal
           src={produtoAtual.image_url}
@@ -150,13 +150,6 @@ const ProdContainer = ({ produtoAtual, id }) => {
           <SubTitulo>500+ vendidos</SubTitulo>
         </SubContainer>
       </Div>
-      {/* <SectionImagesSec>
-        <ImagesContainer>
-          <ImageSec src="https://www.fantoy.com.br/media/catalog/product/cache/5070b15b05522f191912dd31c57262ab/t/o/tomura-min.jpg"></ImageSec>
-          <ImageSec src="https://www.fantoy.com.br/media/catalog/product/cache/5070b15b05522f191912dd31c57262ab/b/a/bakugo_anime2-min.jpg"></ImageSec>
-          <ImageSec src="https://www.fantoy.com.br/media/catalog/product/cache/5070b15b05522f191912dd31c57262ab/d/a/dabi2-min.jpg"></ImageSec>
-        </ImagesContainer>
-      </SectionImagesSec> */}
     </ProdutoContainer>
   );
 };

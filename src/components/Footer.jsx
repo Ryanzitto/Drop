@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 const ContainerGeral = styled.div`
   background-image: url("/img/5593055.jpg");

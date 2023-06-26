@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
 import ListaPedidos from "./ListaPedidos";
+import ButtonDefault from "../ButtonDefault";
 
 const Container = styled.div`
   width: 100%;
@@ -18,109 +16,6 @@ const Container = styled.div`
   gap: 50px;
 `;
 
-const FormContainer = styled.form`
-  width: 400px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: #fafafa;
-  box-shadow: 0px 2px 5px #e2e2e2;
-  border-radius: 10px;
-`;
-const Label = styled.label`
-  font-weight: 500;
-  font-size: 14px;
-  color: #be96c8;
-`;
-
-const ButtonGetOrder = styled.button`
-  width: 250px;
-  height: 40px;
-  border: 2px solid #be96c8;
-  color: #be96c8;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  background-color: #fafafa;
-  cursor: pointer;
-  &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
-  }
-`;
-
-const Span = styled.span`
-  font-size: 12px;
-  color: red;
-  margin-top: 5px;
-`;
-
-const SectionImput = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-`;
-const ContainerBtn = styled.div`
-  height: 50px;
-  display: flex;
-  align-items: flex-end;
-`;
-
-const Imput = styled.input`
-  width: 250px;
-  height: 30px;
-  border-radius: 5px;
-  border: none;
-  text-align: center;
-  font-weight: 600;
-  font-size: 16px;
-  letter-spacing: 0.2px;
-  color: #575555eb;
-  background-color: #e1dde2;
-  &:focus {
-    outline: 1px solid #be96c8;
-  }
-`;
-
-const MensagemErro = styled.p`
-  font-size: 20px;
-  color: red;
-  font-weight: 500;
-`;
-
-const ContainerDisplay = styled.div`
-  width: 400px;
-  height: 460px;
-  background-color: #fafafa;
-  box-shadow: 0px 2px 5px #e2e2e2;
-  border-radius: 10px;
-  border-top-right-radius: 0px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  word-wrap: break-word;
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 8px;
-    background-color: #aaa;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #000;
-    border-radius: 5px;
-  }
-`;
 const Error = styled.p`
   width: 65%;
   color: red;
@@ -158,6 +53,32 @@ const sucesso = {
   color: "#1afa1a",
 };
 
+const SectionImput = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`;
+const Label = styled.label`
+  font-weight: 500;
+  font-size: 14px;
+  color: #494949eb;
+`;
+
+const Imput = styled.input`
+  width: 250px;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  color: #575555eb;
+  background-color: #e1dde2;
+  &:focus {
+    outline: 1px solid #be96c8;
+  }
+`;
 const GetOrder = () => {
   const [lista, setLista] = useState("");
 
@@ -186,9 +107,9 @@ const GetOrder = () => {
       .then(
         (response) => {
           console.log(response);
-          setLista(response.data.data)
-          setStatus(response.status)
-          setErro("SUCESSO!")
+          setLista(response.data.data);
+          setStatus(response.status);
+          setErro("SUCESSO!");
         },
         (error) => {
           console.log(error);
@@ -200,16 +121,16 @@ const GetOrder = () => {
 
   return (
     <Container>
-      <div onChange={(e) => setOffset(e.target.value)}>
-        <label>offset</label>
-        <input></input>
-      </div>
-      <div onChange={(e) => setLimit(e.target.value)}>
-        <label>limit</label>
-        <input></input>
-      </div>
       <ButtonContainer>
-        <ButtonGetOrder onClick={buscaPedidos}>GET ORDER</ButtonGetOrder>
+        <SectionImput onChange={(e) => setOffset(e.target.value)}>
+          <Label>OFFSET:</Label>
+          <Imput />
+        </SectionImput>
+        <SectionImput onChange={(e) => setLimit(e.target.value)}>
+          <Label>LIMIT:</Label>
+          <Imput />
+        </SectionImput>
+        <ButtonDefault func={buscaPedidos} nomeBtn={"LISTAR PEDIDOS"} />
         {status != null ? (
           <Status style={status === 200 ? status200 : null}>{status}</Status>
         ) : null}

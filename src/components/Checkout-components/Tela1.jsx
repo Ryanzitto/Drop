@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStep, resetData, saveData } from "../../redux/form/actions";
 import { useNavigate } from "react-router-dom";
+import ButtonDefault from "../ButtonDefault";
 
 const Container = styled.div`
   width: 100%;
@@ -133,47 +134,11 @@ const Option = styled.option`
   font-size: 16px;
 `;
 
-const ButtonConfirma = styled.button`
-  width: 200px;
-  height: 40px;
-  border: 2px solid #a840c2;
-  color: #a840c2;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  margin-bottom: 50px;
-  margin-top: 10px;
-  background-color: white;
-  cursor: pointer;
-  border-radius: 3px;
-  transition: 1s;
-  &:hover {
-    background-color: #a840c2;
-    color: white;
-  }
-`;
 const Span = styled.span`
   font-size: 12px;
   color: red;
   text-align: center;
   margin-top: 5px;
-`;
-
-const ButtonReseta = styled.button`
-  width: 200px;
-  height: 40px;
-  border: none;
-  color: #919191;
-  font-weight: 600;
-  font-size: 16px;
-  letter-spacing: 1px;
-  margin-bottom: 50px;
-  margin-right: 30px;
-  background-color: white;
-  cursor: pointer;
-  @media screen and (max-width: 1000px) {
-    margin: 0;
-    margin-top: 20px;
-  }
 `;
 
 const ResetaContainer = styled.div`
@@ -273,6 +238,7 @@ const Div2 = styled.div`
     width: 100%;
   }
 `;
+
 const createDataFormSchema = z.object({
   cep: z
     .string()
@@ -464,7 +430,7 @@ const Tela1 = () => {
                 <Imput type="text" {...register("sobrenome")} />
                 {errors.sobrenome && <Span>{errors.sobrenome.message}</Span>}
               </SectionImput>
-              <ButtonConfirma>CONFIRMAR</ButtonConfirma>
+              <ButtonDefault nomeBtn={"CONFIRMAR"} />
             </Coluna3>
           </Body>
         </>
@@ -486,7 +452,7 @@ const Tela1 = () => {
                 esses dados como base para seu pedido. caso queira alterar os
                 dados de entrega clique no botão abaixo.
               </MensagemReseta>
-              <ButtonReseta onClick={handleClickReseta}>ALTERAR</ButtonReseta>
+              <ButtonDefault func={handleClickReseta} nomeBtn={"RESETAR"} />
             </Div2>
           </Conteudo>
         </ResetaContainer>

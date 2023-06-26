@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -38,6 +38,10 @@ const ContainerGeral = styled.div`
 `;
 
 const Header = styled.div`
+  background-image: url("/img/5593055.jpg");
+  background-size: 500px;
+`;
+const HeaderContainer = styled.div`
   padding-top: 25px;
   padding-bottom: 25px;
   width: 100%;
@@ -46,12 +50,16 @@ const Header = styled.div`
   align-items: center;
   flex-direction: column;
   border-bottom: 1px solid #e2e2e2;
-  background-color: white;
+  background: linear-gradient(to right, #a840c2, 80%, #d751f8b9);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(10.3px);
+  border: 1px solid rgba(114, 114, 114, 0.18);
 `;
 const Titulo = styled.p`
   font-size: 30px;
   font-weight: 600;
-  color: #be96c8;
+  color: white;
 `;
 const Body = styled.div`
   display: flex;
@@ -60,7 +68,7 @@ const Body = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height:  fit-content;
+  height: fit-content;
 `;
 const FooterContainer = styled.div`
   width: 100%;
@@ -85,7 +93,7 @@ const Left = styled.div`
   width: 40%;
   height: 100%;
   align-items: center;
-gap: 20px;
+  gap: 20px;
 `;
 const Right = styled.div`
   display: flex;
@@ -107,50 +115,17 @@ const ImagemProduto = styled.img`
 const ButtonCancela = styled.button`
   width: 150px;
   height: 40px;
-  border: 2px solid #be96c8;
+  border: none;
   color: #be96c8;
   font-weight: 600;
   letter-spacing: 0.2px;
   background-color: white;
   cursor: pointer;
   &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
+    opacity: 0.7;
   }
 `;
 
-const Top = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-const TopSection = styled.div`
-  width: 180px;
-  display: flex;
-  height: 120px;
-  flex-direction: column;
-  border-radius: 10px;
-  gap: 10px;
-  background-color: #f0f0f0;
-  box-shadow: 0px 2px 5px #979797;
-`;
-const TopHeader = styled.div`
-  width: 100%;
-  height: 30px;
-  background-color: #c376d6;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 const SubTitulo = styled.h4`
   font-size: 14px;
   letter-spacing: 1px;
@@ -186,46 +161,7 @@ const BottomBody = styled.div`
   gap: 5px;
   width: 350px;
 `;
-const NomeProduto = styled.p`
-  font-size: 16px;
-  font-weight: 600;
-  color: #383838;
-  letter-spacing: 1px;
-  margin-left: 30px;
-  &:hover {
-    color: #c376d6;
-  }
-`;
-const DescProduto = styled.p`
-  font-size: 16px;
-  font-weight: 600;
-  color: #383838;
-  letter-spacing: 1px;
-  margin-left: 30px;
-  &:hover {
-    color: #c376d6;
-  }
-`;
-const Quantidade = styled.p`
-  font-size: 16px;
-  font-weight: 600;
-  color: #383838;
-  letter-spacing: 1px;
-  margin-left: 30px;
-  &:hover {
-    color: #c376d6;
-  }
-`;
-const Total = styled.p`
-  font-size: 16px;
-  font-weight: 600;
-  color: #383838;
-  letter-spacing: 1px;
-  margin-left: 30px;
-  &:hover {
-    color: #c376d6;
-  }
-`;
+
 const Section = styled.div`
   display: flex;
   gap: 10px;
@@ -249,30 +185,19 @@ const Valor = styled.p`
   color: #383838;
   letter-spacing: 0.5px;
 `;
-const Copy = styled.p`
-  font-size: 12px;
-  font-weight: 600;
-  color: #383838;
-  letter-spacing: 0.5px;
-  padding-left: 15px;
-  padding-right: 15px;
-`;
 
 const Pedidos = () => {
-  const [value, setValue] = useState();
-  const [offset, setOffset] = useState();
-  const [limit, setLimit] = useState();
   const [data, setData] = useState();
 
   const { dataEntrega } = useSelector((rootReducer) => rootReducer.formReducer);
 
-  const { pedidosConfirmados } = useSelector(
-    (rootReducer) => rootReducer.cartReducer
-  );
-
-    useEffect(() => {
-      const url_dev = "http://168.119.50.201:3001";
-      axios.get(`${url_dev}/public/order?value=${dataEntrega.email}&offset=0&limit=20`).then(
+  useEffect(() => {
+    const url_dev = "http://168.119.50.201:3001";
+    axios
+      .get(
+        `${url_dev}/public/order?value=${dataEntrega.email}&offset=0&limit=20`
+      )
+      .then(
         (response) => {
           console.log(response.data.data);
           setData(response.data.data);
@@ -281,8 +206,7 @@ const Pedidos = () => {
           console.log(error);
         }
       );
-    }, [])
-
+  }, []);
 
   console.log(dataEntrega);
 
@@ -290,63 +214,64 @@ const Pedidos = () => {
     <ContainerPai>
       <ContainerGeral>
         <Header>
-          <Titulo>PEDIDOS</Titulo>
+          <HeaderContainer>
+            <Titulo>PEDIDOS</Titulo>
+          </HeaderContainer>
         </Header>
         <Body>
-          <HeaderBody>
-          </HeaderBody>
+          <HeaderBody></HeaderBody>
           {data?.map((item) => {
-            return(
+            return (
               <Container>
-              <Left>
-                <ImagemProduto src={item.product.image_url} />
-                <ButtonCancela>CANCELAR PEDIDO</ButtonCancela>
-              </Left>
-              <Right>
-                <Bottom>
-                  <HeaderBottom>
-                    <SubTitulo>DADOS DE ENTREGA</SubTitulo>
-                  </HeaderBottom>
-                  <BottomBody>
-                    <Section>
-                      <Label>PROD</Label>
-                      <Valor>{item.product.name}-{item.product.description}</Valor>
-                    </Section>
-                    <Section>
-                      <Label>QUANT.</Label>
-                      <Valor>{item.quantity}</Valor>
-                    </Section>
-                    <Section>
-                      <Label>TOTAL</Label>
-                      <Valor>{item.total}</Valor>
-                    </Section>
-                    <Section>
-                      <Label>ENDEREÇO</Label>
-                      <Valor>
-                        {item.address.neighborhood}, {item.address.street},
-                        {item.address.number}
-                      </Valor>
-                    </Section>
-                    <Section>
-                      <Label>PESSOA</Label>
-                      <Valor>{item.address.user.name}</Valor>
-                    </Section>
-                    <Section>
-                      <Label>CEP</Label>
-                      <Valor>{item.address.zip_code}</Valor>
-                    </Section>
-                    <Section>
-                      <Label>CÓDIGO DE RASTREAMENTO</Label>
-                      <Valor>000000000</Valor>
-                    </Section>
-                  </BottomBody>
-                </Bottom>
-              </Right>
-            </Container>
-            )
-  
+                <Left>
+                  <ImagemProduto src={item.product.image_url} />
+                  <ButtonCancela>CANCELAR PEDIDO</ButtonCancela>
+                </Left>
+                <Right>
+                  <Bottom>
+                    <HeaderBottom>
+                      <SubTitulo>DADOS DE ENTREGA</SubTitulo>
+                    </HeaderBottom>
+                    <BottomBody>
+                      <Section>
+                        <Label>PROD</Label>
+                        <Valor>
+                          {item.product.name}-{item.product.description}
+                        </Valor>
+                      </Section>
+                      <Section>
+                        <Label>QUANT.</Label>
+                        <Valor>{item.quantity}</Valor>
+                      </Section>
+                      <Section>
+                        <Label>TOTAL</Label>
+                        <Valor>{item.total}</Valor>
+                      </Section>
+                      <Section>
+                        <Label>ENDEREÇO</Label>
+                        <Valor>
+                          {item.address.neighborhood}, {item.address.street},
+                          {item.address.number}
+                        </Valor>
+                      </Section>
+                      <Section>
+                        <Label>PESSOA</Label>
+                        <Valor>{item.address.user.name}</Valor>
+                      </Section>
+                      <Section>
+                        <Label>CEP</Label>
+                        <Valor>{item.address.zip_code}</Valor>
+                      </Section>
+                      <Section>
+                        <Label>CÓDIGO DE RASTREAMENTO</Label>
+                        <Valor>000000000</Valor>
+                      </Section>
+                    </BottomBody>
+                  </Bottom>
+                </Right>
+              </Container>
+            );
           })}
-
         </Body>
         <FooterContainer>
           <Footer />

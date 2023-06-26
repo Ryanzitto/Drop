@@ -11,13 +11,13 @@ import Footer from "../components/Footer";
 import { deslogaUsuario, mudaForm } from "../redux/user/actions";
 import GetOrder from "../components/Admin-components/ListOrder";
 import CancelOrder from "../components/Admin-components/CancelOrder";
+import ButtonDefault from "../components/ButtonDefault";
+
 const ContainerPai = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
   overflow-x: hidden;
-  background-image: url("/img/BG-site.jpg");
-  background-size: 1000px;
   @keyframes animationMoveImg {
     to {
       transform: translateY(5px);
@@ -45,6 +45,11 @@ const ContainerGeral = styled.div`
 `;
 
 const Header = styled.div`
+  background-image: url("/img/5593055.jpg");
+  background-size: 1000px;
+  background-position: 500px;
+`;
+const HeaderContainer = styled.div`
   padding-top: 25px;
   padding-bottom: 25px;
   width: 100%;
@@ -52,13 +57,12 @@ const Header = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border-bottom: 1px solid #e2e2e2;
-  background-color: white;
+  background: linear-gradient(to right, #a840c2, 80%, #d751f8b9);
 `;
 const Titulo = styled.p`
   font-size: 30px;
   font-weight: 600;
-  color: #be96c8;
+  color: white;
 `;
 const ActionsContainer = styled.div`
   width: 100%;
@@ -99,34 +103,12 @@ const MensagemErro = styled.p`
   font-size: 20px;
   width: 500px;
   text-align: center;
-  color: #be96c8;
+  color: #494949eb;
+  font-weight: 600;
   margin-bottom: 20px;
 `;
 const FooterContainer = styled.div`
   width: 100%;
-`;
-const ErrorBtn = styled.button`
-  width: 150px;
-  height: 40px;
-  border: 2px solid #be96c8;
-  color: #be96c8;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  background-color: #fafafa;
-  letter-spacing: 1px;
-  cursor: pointer;
-  &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
-  }
 `;
 
 const actionStyle = {
@@ -155,7 +137,9 @@ const AdminTela = () => {
       {tokens?.access_token != null ? (
         <ContainerGeral>
           <Header>
-            <Titulo>ADMIN AREA</Titulo>
+            <HeaderContainer>
+              <Titulo>ADMIN AREA</Titulo>
+            </HeaderContainer>
           </Header>
           <ActionsContainer>
             <ButtonAction
@@ -216,7 +200,7 @@ const AdminTela = () => {
             Algo inesperado aconteceu, clique no botão abaixo para ser
             redirecionado ao site.
           </MensagemErro>
-          <ErrorBtn onClick={redirecionaUser}>VOLTAR</ErrorBtn>
+          <ButtonDefault nomeBtn={"VOLTAR"} func={redirecionaUser} />
         </ContainerErro>
       )}
     </ContainerPai>

@@ -5,7 +5,6 @@ import ProdContainer from "../components/Produto-Components/ProdutoContainer";
 import ProdPainel from "../components/Produto-Components/ProdPainel";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 const ContainerPai = styled.div`
@@ -118,6 +117,7 @@ const DescSection = styled.div`
 const DescricaoTitulo = styled.h4`
   width: 100%;
   font-size: 30px;
+  font-weight: 900;
   letter-spacing: 1px;
   color: #494949eb;
   padding-top: 5px;
@@ -165,6 +165,7 @@ const SobreMarcaDesc = styled.div`
 const SobreTitulo = styled.h4`
   width: 100%;
   font-size: 30px;
+  font-weight: 900;
   letter-spacing: 1px;
   color: #494949eb;
   padding-top: 5px;
@@ -188,10 +189,10 @@ const Pedidos = styled.p`
   letter-spacing: 1px;
   font-weight: 800;
   color: #222222eb;
-
+  transition: 1s;
   cursor: pointer;
   &:hover {
-    animation: animaTexto 1s both;
+    color: #b93fffc5;
   }
 `;
 

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
 import Lista from "./Lista";
-
+import ButtonDefault from "../ButtonDefault";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -33,30 +33,7 @@ const FormContainer = styled.form`
 const Label = styled.label`
   font-weight: 500;
   font-size: 14px;
-  color: #be96c8;
-`;
-
-const Confirma = styled.button`
-  width: 250px;
-  height: 40px;
-  border: 2px solid #be96c8;
-  color: #be96c8;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  background-color: #fafafa;
-  cursor: pointer;
-  &:hover {
-    animation: animationBtn 2s ease both;
-    @keyframes animationBtn {
-      to {
-        background-color: #a840c2;
-        color: white;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-    }
-  }
+  color: #494949eb;
 `;
 
 const Span = styled.span`
@@ -231,7 +208,7 @@ const Update = () => {
           {errors.id && <Span>{errors.id.message}</Span>}
         </SectionImput>
         <ContainerBtn>
-          <Confirma>CRIAR PRODUTO</Confirma>
+          <ButtonDefault func={alteraProduto} nomeBtn={"ATUALIZAR PROD"} />
         </ContainerBtn>
         {status != null ? (
           <Status style={status === 200 ? status200 : null}>{status}</Status>

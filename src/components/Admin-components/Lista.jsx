@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+
 const ContainerDisplay = styled.div`
   width: 400px;
   height: 500px;
@@ -23,7 +23,6 @@ const ContainerDisplay = styled.div`
     border-radius: 5px;
   }
 `;
-const Resposta = styled.p``;
 const ContainerLista = styled.div`
   width: 80%;
   background-color: #d36ad6;
@@ -59,23 +58,7 @@ const Label2 = styled.label`
 const Valor = styled.p`
   width: 80%;
 `;
-const Status = styled.button`
-  width: 75px;
-  height: 25px;
-  border: none;
-  background-color: #ff2424;
-  border-radius: 5px;
-  color: white;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  margin-top: 10px;
-`;
-const Error = styled.p`
-  width: 65%;
-  color: red;
-  margin-top: 10px;
-  text-align: center;
-`;
+
 const ContainerLoading = styled.div`
   width: 100%;
   height: 100%;
@@ -84,9 +67,6 @@ const ContainerLoading = styled.div`
   align-items: center;
 `;
 
-const status200 = {
-  backgroundColor: "#1afa1a",
-};
 const Spinner = styled.div`
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;

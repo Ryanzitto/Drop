@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { logaUsuario } from "../../redux/user/actions";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import ButtonDefault from "../ButtonDefault";
 const Container = styled.div`
   height: 100%;
   display: flex;
@@ -40,7 +40,7 @@ const FormContainer = styled.form`
 const Label = styled.label`
   font-weight: 500;
   font-size: 14px;
-  color: #be96c8;
+  color: #494949eb;
 `;
 
 const Confirma = styled.button`
@@ -159,7 +159,7 @@ const Login = () => {
             {errors.senha && <Span>{errors.senha.message}</Span>}
           </SectionImput>
           <ContainerBtn>
-            <Confirma>LOGIN</Confirma>
+            <ButtonDefault nomeBtn={"CONFIRMAR"} />
           </ContainerBtn>
         </FormContainer>
         <FooterForm>

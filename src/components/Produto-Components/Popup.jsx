@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../../redux/cart/actions";
 const PopUp = styled.div`
-  width: 100%;
+  width: 80%;
   height: 150px;
   background-color: white;
   border-radius: 5px;
@@ -31,7 +31,7 @@ const PopUpTextContainer = styled.div`
   border-top-right-radius: 5px;
   letter-spacing: 0.3px;
   border-bottom: 1px solid #dddddd;
-  background-color: #272727;
+  background-color: #d1ba34;
 `;
 const PopUpText = styled.p`
   padding: 30px;
